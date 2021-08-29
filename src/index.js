@@ -20,8 +20,13 @@ try {
     }
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
-    const line = file.chunks[0].changes[0]
-    console.log( line )
+    const line = file.chunks[0].changes[0].content
+    if (  line.indexOf( "github.com" ) < 0 ) {
+	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL de la rama " )
+    }
+
+    var ghRepoMatch = /github.com\/(\S+)\/(.+?)(:\s+|\))/.exec(content)
+    console.log(ghRepoMatch)
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
