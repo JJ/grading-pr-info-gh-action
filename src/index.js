@@ -3,7 +3,7 @@ const {GitHub, context} = require('@actions/github')
 import "./grading.js"
 
 try {
-    const token = core.getInput('github-token', {required: true})
+    const token = process.env.GITHUB_TOKEN
     const github = new GitHub(token, {} )
 
     const diff = await get_diff( context, github)
