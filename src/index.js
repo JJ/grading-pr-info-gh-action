@@ -11,8 +11,8 @@ try {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" );
     }
     const file = diff[0];
-    core.info.log( "✅ Hay solo un fichero en el pull request")
-    core.info.log(file);
+    core.info( "✅ Hay solo un fichero en el pull request")
+    core.debug(file);
 } catch (error) {
     core.setFailed(error.message);
 }
