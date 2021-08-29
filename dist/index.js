@@ -6181,9 +6181,9 @@ const core = __nccwpck_require__(186);
 const {GitHub, context} = __nccwpck_require__(438)
 const parse = __nccwpck_require__(833)
 
-async function get_diff( context, github ) {
+async function get_diff( context, octokit ) {
     const diff_url = context.payload.pull_request.diff_url
-    const result = await github.request( diff_url )
+    const result = await octokit.request( diff_url )
     return parse( result.data )
 }
 
@@ -6198,14 +6198,15 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _grading_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(470);
 const core = __nccwpck_require__(186);
-const {GitHub, context} = __nccwpck_require__(438)
+const github = __nccwpck_require__(438)
 ;
 
 try {
+    const context = github.context
     const token = process.env.GITHUB_TOKEN
-    const github = new GitHub(token, {} )
+    const octokit = new github.getOctokit(token)
 
-    const diff = await get_diff( context, github)
+    const diff = await get_diff( context, octokit )
      if ( diff.length != 1 ) {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" );
      }
