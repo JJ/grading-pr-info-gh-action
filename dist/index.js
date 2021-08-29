@@ -6207,11 +6207,16 @@ try {
     const context = github.context
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
-
     const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z)( context, octokit )
-     if ( diff.length != 1 ) {
+    if ( diff.length != 1 ) {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" );
-     }
+    }
+    const file = diff[0];
+    core.info( "✅ Hay solo un fichero en el pull request")
+    core.debug(file);
+    if ( file.additions != 1 ) {
+	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" );
+    }
 } catch (error) {
     core.setFailed(error.message);
 }
