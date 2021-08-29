@@ -12,4 +12,4 @@ jobs:
       - name: Run script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: dist/index.js
+        run: node dist/index.js
