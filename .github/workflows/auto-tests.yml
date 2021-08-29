@@ -9,8 +9,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-      - name: Checkout repo y comprueba
+      - name: Checkout repo
         uses: actions/checkout@v2
+      - name: Comprueba
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node dist/index.js
