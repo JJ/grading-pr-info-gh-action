@@ -1,0 +1,33 @@
+{
+  "name": "grading-pr-info-gh-action",
+  "version": "1.0.0",
+  "description": "GHA para extraer información de PRs de corrección",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JJ/grading-pr-info-gh-action.git"
+  },
+  "keywords": [
+    "github",
+    "action",
+    "pull",
+    "requests",
+    "infraestructura",
+    "virtual",
+    "cloud",
+    "computing"
+  ],
+  "author": "JJ Merelo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/JJ/grading-pr-info-gh-action/issues"
+  },
+  "homepage": "https://github.com/JJ/grading-pr-info-gh-action#readme",
+  "devDependencies": {
+    "@actions/core": "^1.5.0",
+    "@actions/github": "^5.0.0"
+  }
+}
