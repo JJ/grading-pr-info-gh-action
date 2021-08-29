@@ -14,4 +14,6 @@ jobs:
       - name: Comprueba
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node dist/index.js
+        run: |
+          ls -R
+          node dist/index.js
