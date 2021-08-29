@@ -12,7 +12,7 @@ try {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
     const file = diff[0]
-    console.log( "✅ Hay solo un fichero 📁 " + file.from + "📁 en el pull request")
+    console.log( "✅ Hay solo un fichero 📁" + file.from + "📁 en el pull request")
 
     if ( file.additions != 1 ) {
 	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" )
@@ -24,8 +24,10 @@ try {
 	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL de la rama " )
     }
 
-    var ghRepoMatch = /github.com\/(\S+)\/(.+?)(:\s+|\))/.exec(line)
-    console.log(ghRepoMatch)
+    var ghRepoMatch = /github.com\/(\S+)\/(.+?)(?=\s+|\))/.exec(line)
+    core.setOutput('user',ghRepoMatch[1])
+    core.setOutput('repo',ghRepoMatch[2])
+    console.log( ghRepoMatch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
