@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github')
-import "./grading.js"
+import get_diff from "./grading.js"
 
 try {
     const context = github.context

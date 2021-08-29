@@ -6176,7 +6176,9 @@ function wrappy (fn, cb) {
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 "use strict";
-/* unused harmony export default */
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (/* binding */ get_diff)
+/* harmony export */ });
 const core = __nccwpck_require__(186);
 const {GitHub, context} = __nccwpck_require__(438)
 const parse = __nccwpck_require__(833)
@@ -6206,7 +6208,7 @@ try {
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
 
-    const diff = await get_diff( context, octokit )
+    const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z)( context, octokit )
      if ( diff.length != 1 ) {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" );
      }
