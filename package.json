@@ -28,6 +28,7 @@
   "homepage": "https://github.com/JJ/grading-pr-info-gh-action#readme",
   "devDependencies": {
     "@actions/core": "^1.5.0",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^5.0.0",
+    "parse-diff": "^0.8.1"
   }
 }
