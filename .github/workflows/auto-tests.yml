@@ -11,7 +11,7 @@ jobs:
           node-version: 16
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Comprueba
+      - name: Comprueba y analiza
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -13,6 +13,9 @@ try {
     const file = diff[0];
     core.info( "✅ Hay solo un fichero en el pull request")
     core.debug(file);
+    if ( file.additions != 1 ) {
+	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" );
+    }
 } catch (error) {
     core.setFailed(error.message);
 }
