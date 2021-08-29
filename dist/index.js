@@ -6213,16 +6213,15 @@ try {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
     const file = diff[0]
-    core.info( "✅ Hay solo un fichero en el pull request")
-    console.log(file)
+    core.info( "✅ Hay solo un fichero 📁 " + file.from + " en el pull request")
 
     if ( file.additions != 1 ) {
 	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" )
     }
-    core.info( "✅ Hay solo una sola línea cambiada en el pull request")
+    core.info( "✅ Hay solo una línea cambiada en el pull request")
 
     const line = file.chunks[0].changes[0]
-    console.log( "Línea cambiada " + line )
+    console.log( line )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
