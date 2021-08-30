@@ -25,9 +25,7 @@ try {
     while ( file.chunks[0].changes[changes_index].type != 'add' ) {
 	changes_index++
     }
-   
     const line = file.chunks[0].changes[changes_index].content
-    console.log( line )
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
     if (  ghRepoMatch == null ) {
@@ -39,7 +37,7 @@ try {
     set_vars(core, 'user', user)
     set_vars(core, 'repo', repo)
 
-    const pull_data = await get_pull( context, octokit, user, repo, ghRepoMatch[3] )
+    const pull_data = await get_pull( octokit, user, repo, ghRepoMatch[3] )
     console.log( pull_data )
 
 } catch (error) {

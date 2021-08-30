@@ -6181,8 +6181,6 @@ function wrappy (fn, cb) {
 /* harmony export */   "Rb": () => (/* binding */ get_pull),
 /* harmony export */   "lx": () => (/* binding */ set_vars)
 /* harmony export */ });
-const core = __nccwpck_require__(186);
-const {GitHub, context} = __nccwpck_require__(438)
 const parse = __nccwpck_require__(833)
 
 async function get_diff( context, octokit ) {
@@ -6191,8 +6189,9 @@ async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
-async function get_pull( context, octokit, user, repo, pull_number ) {
+async function get_pull( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/{user}/{repo}/pulls/{pull_number}`
+    console.log( pull_url )
     const result = await octokit.request( pull_url )
     console.log( result )
     return parse( result.data )
@@ -6240,9 +6239,7 @@ try {
     while ( file.chunks[0].changes[changes_index].type != 'add' ) {
 	changes_index++
     }
-   
     const line = file.chunks[0].changes[changes_index].content
-    console.log( line )
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
     if (  ghRepoMatch == null ) {
@@ -6254,7 +6251,7 @@ try {
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', user)
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', repo)
 
-    const pull_data = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull */ .Rb)( context, octokit, user, repo, ghRepoMatch[3] )
+    const pull_data = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull */ .Rb)( octokit, user, repo, ghRepoMatch[3] )
     console.log( pull_data )
 
 } catch (error) {
