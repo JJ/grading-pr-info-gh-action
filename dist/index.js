@@ -6228,7 +6228,12 @@ try {
 
     console.log(  file.chunks[0].changes[0] )
     console.log(  file.chunks[0] )
-    const line = file.chunks[0].changes[0].content
+    let changes_index = 0
+    while ( file.chunks[0].changes[changes_index].type != 'add' ) {
+	changes_index++
+    }
+    
+    const line = file.chunks[0].changes[changes_index].content
     console.log( line )
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
