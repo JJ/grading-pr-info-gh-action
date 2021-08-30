@@ -6226,6 +6226,8 @@ try {
     }
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
+    console.log(  file.chunks[0].changes[0] )
+    console.log(  file.chunks[0] )
     const line = file.chunks[0].changes[0].content
     console.log( line )
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
