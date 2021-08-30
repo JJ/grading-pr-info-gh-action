@@ -1,6 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-import {get_diff, set_vars} from "./grading.js"
+import {get_diff, get_pull, set_vars} from "./grading.js"
 
 try {
     const context = github.context
@@ -12,7 +12,7 @@ try {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
     const file = diff[0]
-    console.log( "✅ Hay solo un fichero 📁" + file.from + "📁 en el pull request")
+    core.info( "✅ Hay solo un fichero 📁\u001b[1m" + file.from + "📁 en el pull request")
 
     if ( file.additions != 1 ) {
 	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" )

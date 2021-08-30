@@ -6178,9 +6178,9 @@ function wrappy (fn, cb) {
 "use strict";
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "xl": () => (/* binding */ get_diff),
+/* harmony export */   "Rb": () => (/* binding */ get_pull),
 /* harmony export */   "lx": () => (/* binding */ set_vars)
 /* harmony export */ });
-/* unused harmony export get_pull */
 const core = __nccwpck_require__(186);
 const {GitHub, context} = __nccwpck_require__(438)
 const parse = __nccwpck_require__(833)
@@ -6227,7 +6227,7 @@ try {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
     const file = diff[0]
-    console.log( "✅ Hay solo un fichero 📁" + file.from + "📁 en el pull request")
+    core.info( "✅ Hay solo un fichero 📁\u001b[1m" + file.from + "📁 en el pull request")
 
     if ( file.additions != 1 ) {
 	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" )
@@ -6251,7 +6251,7 @@ try {
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', ghRepoMatch[1])
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', ghRepoMatch[2])
 
-    const pull_data = await get_pull( context, octokit, user, repo, ghRepoMatch[3] )
+    const pull_data = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull */ .Rb)( context, octokit, user, repo, ghRepoMatch[3] )
     console.log( pull_data )
 
 } catch (error) {
