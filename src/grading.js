@@ -7,7 +7,7 @@ export async function get_diff( context, octokit ) {
 }
 
 export async function get_pull( octokit, user, repo, pull_number ) {
-    const pull_url = `https://api.github.com/repos/{user}/{repo}/pulls/{pull_number}`
+    const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     console.log( pull_url )
     const result = await octokit.request( pull_url )
     console.log( result )
