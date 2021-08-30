@@ -8,7 +8,14 @@ export async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
+export async function get_pull( context, octokit, user, repo, pull_number ) {
+    const pull_url = `https://api.github.com/repos/{user}/{repo}/pulls/{pull_number}`
+    const result = await octokit.request( pull_url )
+    console.log( result )
+    return parse( result.data )
+}
+
 export  function set_vars( core, var_name, value ) {
     core.setOutput(var_name, value)
-    core.setEnv(var_name, value )
+    core.exportVariable(var_name, value )
 }
