@@ -6228,14 +6228,13 @@ try {
 
     const line = file.chunks[0].changes[0].content
     let ghRepoMatch = /github.com\/(\S+)\/(.+?\/pull\/\d+)(?=\s+|\))/.exec(line)
+    console.log( ghRepoMatch )
     if (  ghRepoMatch ) {
 	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
     }
-
-
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .l)( core, 'user' ,ghRepoMatch[1])
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .l)( core,'repo',ghRepoMatch[2])
-    console.log( ghRepoMatch )
+
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
