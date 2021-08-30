@@ -29,7 +29,7 @@ try {
 	core.setFailed( sorry("El cambio debe incluir el URL del pull request " ))
     }
     const pull_URL =  ghRepoMatch[0]
-    core.info( all_good("Encontrado URL de un pull request " + pull_URL ))
+    core.info( all_good("Encontrado URL de un pull request 🔗" + pull_URL ))
     set_vars(core, 'URL', pull_URL)
     const user =  ghRepoMatch[1]
     const repo =  ghRepoMatch[2]
@@ -40,7 +40,7 @@ try {
     if ( pull_branch == 'main' ) {
 	core.setFailed( sorry("El PR debe ser desde una rama" ))
     }
-    core.info( all_good("Encontrado pull request desde la rama" + pull_branch ))
+    core.info( all_good("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     set_vars( core, 'rama', pull_branch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);

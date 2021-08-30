@@ -6251,7 +6251,7 @@ try {
 	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El cambio debe incluir el URL del pull request " ))
     }
     const pull_URL =  ghRepoMatch[0]
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request " + pull_URL ))
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'URL', pull_URL)
     const user =  ghRepoMatch[1]
     const repo =  ghRepoMatch[2]
@@ -6262,7 +6262,7 @@ try {
     if ( pull_branch == 'main' ) {
 	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama" ))
     }
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama" + pull_branch ))
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
