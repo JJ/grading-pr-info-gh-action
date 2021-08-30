@@ -6,15 +6,21 @@ export async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
-export async function get_pull( octokit, user, repo, pull_number ) {
+export async function get_pull_branch( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
-    console.log( pull_url )
     const result = await octokit.request( pull_url )
-    console.log( result )
-    return parse( result.data )
+    return parse( result.data.head.ref )
 }
 
 export  function set_vars( core, var_name, value ) {
     core.setOutput(var_name, value)
     core.exportVariable(var_name, value )
+}
+
+export function all_good ( mensaje ) {
+    return "✅🍊️‍🔥 " + mensaje
+}
+
+export function sorry( mensaje ) {
+    return "🍋💥❌ " + mensaje
 }

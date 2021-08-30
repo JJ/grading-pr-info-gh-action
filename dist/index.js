@@ -6178,8 +6178,10 @@ function wrappy (fn, cb) {
 "use strict";
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "xl": () => (/* binding */ get_diff),
-/* harmony export */   "Rb": () => (/* binding */ get_pull),
-/* harmony export */   "lx": () => (/* binding */ set_vars)
+/* harmony export */   "Rb": () => (/* binding */ get_pull_branch),
+/* harmony export */   "lx": () => (/* binding */ set_vars),
+/* harmony export */   "GF": () => (/* binding */ all_good),
+/* harmony export */   "bb": () => (/* binding */ sorry)
 /* harmony export */ });
 const parse = __nccwpck_require__(833)
 
@@ -6189,17 +6191,23 @@ async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
-async function get_pull( octokit, user, repo, pull_number ) {
+async function get_pull_branch( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
-    console.log( pull_url )
     const result = await octokit.request( pull_url )
-    console.log( result )
-    return parse( result.data )
+    return parse( result.data.head.ref )
 }
 
 function set_vars( core, var_name, value ) {
     core.setOutput(var_name, value)
     core.exportVariable(var_name, value )
+}
+
+function all_good ( mensaje ) {
+    return "✅🍊️‍🔥 " + mensaje
+}
+
+function sorry( mensaje ) {
+    return "🍋💥❌ " + mensaje
 }
 
 
@@ -6223,15 +6231,15 @@ try {
     const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)( context, octokit )
     console.log( context.payload.pull_request   )
     if ( diff.length != 1 ) {
-        core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" ))
     }
     const file = diff[0]
-    core.info( "✅🍊 Hay solo un fichero 📁" + file.from + "📁 en el pull request")
-
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request"))
+    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core,'file', file.from)
     if ( file.additions != 1 ) {
-	core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" )
+	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
     }
-    core.info( "✅🍊 Hay solo una línea cambiada en el pull request")
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"))
 
     let changes_index = 0
     while ( file.chunks[0].changes[changes_index].type != 'add' ) {
@@ -6241,19 +6249,22 @@ try {
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
     if (  ghRepoMatch == null ) {
-	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
+	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El cambio debe incluir el URL del pull request " ))
     }
     const pull_URL =  ghRepoMatch[0]
-    core.info( "✅🍊 Encontrado URL de un pull request " + pull_URL )
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request " + pull_URL ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'URL', pull_URL)
     const user =  ghRepoMatch[1]
     const repo =  ghRepoMatch[2]
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', user)
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', repo)
 
-    const pull_data = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull */ .Rb)( octokit, user, repo, ghRepoMatch[3] )
-    console.log( pull_data )
-
+    const pull_branch = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_branch */ .Rb)( octokit, user, repo, ghRepoMatch[3] )
+    if ( pull_branch == 'main' ) {
+	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama" ))
+    }
+    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama" + pull_branch ))
+    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
