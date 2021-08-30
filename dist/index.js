@@ -6227,9 +6227,9 @@ try {
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
     const line = file.chunks[0].changes[0].content
-    let ghRepoMatch = /github.com\/(\S+)\/(.+?\/pull\/\d+)(?=\s+|\))/.exec(line)
+    const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
     console.log( ghRepoMatch )
-    if (  ghRepoMatch ) {
+    if (  !ghRepoMatch ) {
 	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
     }
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .l)( core, 'user' ,ghRepoMatch[1])
