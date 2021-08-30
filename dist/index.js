@@ -6194,8 +6194,7 @@ async function get_diff( context, octokit ) {
 async function get_pull_branch( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
-    console.log( result.data )
-    return parse( result.data.head.ref )
+    return result.data.head.ref
 }
 
 function set_vars( core, var_name, value ) {
@@ -6230,7 +6229,6 @@ try {
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
     const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)( context, octokit )
-    console.log( context.payload.pull_request   )
     if ( diff.length != 1 ) {
         core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" ))
     }

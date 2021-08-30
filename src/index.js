@@ -7,7 +7,6 @@ try {
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
     const diff = await get_diff( context, octokit )
-    console.log( context.payload.pull_request   )
     if ( diff.length != 1 ) {
         core.setFailed( sorry("Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" ))
     }
