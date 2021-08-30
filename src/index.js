@@ -20,13 +20,14 @@ try {
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
     const line = file.chunks[0].changes[0].content
+    console.log( line )
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
-    console.log( ghRepoMatch )
-    if (  !ghRepoMatch ) {
+
+    if (  ghRepoMatch == null ) {
 	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
     }
-    set_vars( core, 'user' ,ghRepoMatch[1])
-    set_vars( core,'repo',ghRepoMatch[2])
+    set_vars(core, 'user', ghRepoMatch[1])
+    set_vars(core, 'repo', ghRepoMatch[2])
 
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
