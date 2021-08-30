@@ -6177,7 +6177,8 @@ function wrappy (fn, cb) {
 
 "use strict";
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "Z": () => (/* binding */ get_diff)
+/* harmony export */   "x": () => (/* binding */ get_diff),
+/* harmony export */   "l": () => (/* binding */ set_vars)
 /* harmony export */ });
 const core = __nccwpck_require__(186);
 const {GitHub, context} = __nccwpck_require__(438)
@@ -6187,6 +6188,11 @@ async function get_diff( context, octokit ) {
     const diff_url = context.payload.pull_request.diff_url
     const result = await octokit.request( diff_url )
     return parse( result.data )
+}
+
+function set_vars( core, var_name, value ) {
+    core.setOutput(var_name, value)
+    core.setEnv(var_name, value )
 }
 
 
@@ -6207,8 +6213,8 @@ try {
     const context = github.context
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
-    const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z)( context, octokit )
-
+    const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .x)( context, octokit )
+    console.log( context.payload.pull_request   )
     if ( diff.length != 1 ) {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
@@ -6221,13 +6227,14 @@ try {
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
     const line = file.chunks[0].changes[0].content
-    if (  line.indexOf( "github.com" ) < 0 ) {
-	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL de la rama " )
+    let ghRepoMatch = /github.com\/(\S+)\/(.+?\/pull\/\d+)(?=\s+|\))/.exec(line)
+    if (  ghRepoMatch ) {
+	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
     }
 
-    var ghRepoMatch = /github.com\/(\S+)\/(.+?)(?=\s+|\))/.exec(line)
-    core.setOutput('user',ghRepoMatch[1])
-    core.setOutput('repo',ghRepoMatch[2])
+
+    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .l)( core, 'user' ,ghRepoMatch[1])
+    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .l)( core,'repo',ghRepoMatch[2])
     console.log( ghRepoMatch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);

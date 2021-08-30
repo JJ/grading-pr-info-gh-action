@@ -1,13 +1,13 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-import get_diff from "./grading.js"
+import {get_diff, set_vars} from "./grading.js"
 
 try {
     const context = github.context
     const token = process.env.GITHUB_TOKEN
     const octokit = new github.getOctokit(token)
     const diff = await get_diff( context, octokit )
-
+    console.log( context.payload.pull_request   )
     if ( diff.length != 1 ) {
         core.setFailed( "🍐🔥❌ Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" )
     }
@@ -20,13 +20,14 @@ try {
     core.info( "✅ Hay solo una línea cambiada en el pull request")
 
     const line = file.chunks[0].changes[0].content
-    if (  line.indexOf( "github.com" ) < 0 ) {
-	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL de la rama " )
+    let ghRepoMatch = /github.com\/(\S+)\/(.+?\/pull\/\d+)(?=\s+|\))/.exec(line)
+    if (  ghRepoMatch ) {
+	core.setFailed( "🍐🔥❌ El cambio debe incluir el URL del pull request " )
     }
 
-    var ghRepoMatch = /github.com\/(\S+)\/(.+?)(?=\s+|\))/.exec(line)
-    core.setOutput('user',ghRepoMatch[1])
-    core.setOutput('repo',ghRepoMatch[2])
+
+    set_vars( core, 'user' ,ghRepoMatch[1])
+    set_vars( core,'repo',ghRepoMatch[2])
     console.log( ghRepoMatch )
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
