@@ -6194,6 +6194,7 @@ async function get_diff( context, octokit ) {
 async function get_pull_info( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
+    console.log( result.data )
     return [result.data.head.ref, result.data.state]
 }
 
@@ -6270,7 +6271,7 @@ try {
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
 
-    if ( pull_info[0] != 'open') {
+    if ( pull_info[1] != 'open') {
         core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto" ))
     }
 } catch (error) {
