@@ -9,7 +9,7 @@ export async function get_diff( context, octokit ) {
 export async function get_pull_info( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
-    return [result.data.head.ref, result.data.merged]
+    return [result.data.head.ref, result.data.state]
 }
 
 export  function set_vars( core, var_name, value ) {
