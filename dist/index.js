@@ -6221,61 +6221,88 @@ function sorry( mensaje ) {
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _grading_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(470);
-const core = __nccwpck_require__(186)
-const github = __nccwpck_require__(438)
-;
+const core = __nccwpck_require__(186);
+const github = __nccwpck_require__(438);
+
 
 try {
-    const context = github.context
-    const token = process.env.GITHUB_TOKEN
-    const octokit = new github.getOctokit(token)
-    const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)( context, octokit )
-    if ( diff.length != 1 ) {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 fichero, hay ❌" + diff.length + "❌ en el pull request" ))
-    }
-    const file = diff[0]
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request"))
-    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core,'file', file.from)
-    if ( file.additions != 1 ) {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
-    }
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"))
+  const context = github.context;
+  const token = process.env.GITHUB_TOKEN;
+  const octokit = new github.getOctokit(token);
+  const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)(context, octokit);
+  if (diff.length != 1) {
+    core.setFailed(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
+        "Debes cambiar exactamente 1 fichero, hay ❌" +
+          diff.length +
+          "❌ en el pull request"
+      )
+    );
+  }
+  const file = diff[0];
+  core.info(
+    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
+  );
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "file", file.from);
+  if (file.additions != 1) {
+    core.setFailed(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
+        "Debes cambiar exactamente 1 línea en el fichero, hay ❌" +
+          file.additions +
+          "❌ cambiadas en el pull request"
+      )
+    );
+  }
+  core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"));
 
-    let changes_index = 0
-    while ( file.chunks[0].changes[changes_index].type != 'add' ) {
-        changes_index++
-    }
-    const line = file.chunks[0].changes[changes_index].content
-    const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
+  let changes_index = 0;
+  while (file.chunks[0].changes[changes_index].type != "add") {
+    changes_index++;
+  }
+  const line = file.chunks[0].changes[changes_index].content;
+  const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(
+    line
+  );
 
-    if (  ghRepoMatch == null ) {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El cambio debe incluir el URL de un pull request, este incluye " + line ))
-    }
-    const pull_URL =  ghRepoMatch[0]
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL ))
-    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'URL', pull_URL)
-    const user =  ghRepoMatch[1]
-    const repo =  ghRepoMatch[2]
-    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', user)
-    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', repo)
+  if (ghRepoMatch == null) {
+    core.setFailed(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
+        "El cambio debe incluir el URL de un pull request, este incluye " + line
+      )
+    );
+  }
+  const pull_URL = ghRepoMatch[0];
+  core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL));
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "URL", pull_URL);
+  const user = ghRepoMatch[1];
+  const repo = ghRepoMatch[2];
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
 
-    if ( context.payload.pull_request.user.login != user ) {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
-    }
+  if (context.payload.pull_request.user.login != user) {
+    core.setFailed(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user)
+    );
+  }
 
-    const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)( octokit, user, repo, ghRepoMatch[3] )
-    const pull_branch = pull_info[0]
-    if ( pull_branch == 'main' ) {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main" ))
-    }
-    core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
-    ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
+  const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, ghRepoMatch[3]);
+  const pull_branch = pull_info[0];
+  if (pull_branch == "main") {
+    core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main"));
+  }
+  core.info(
+    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch)
+  );
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "rama", pull_branch);
 
-    if ( pull_info[1] != 'open') {
-        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto" ))
-    }
+  if (pull_info[1] != "open") {
+    core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto"));
+  }
+  core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("El PR está todavía abierto 🔓"));
 } catch (error) {
-    core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
+  core.setFailed(
+    "❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message
+  );
 }
 
 __webpack_handle_async_dependencies__();
