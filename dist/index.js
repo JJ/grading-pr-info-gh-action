@@ -6236,19 +6236,19 @@ try {
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request"))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core,'file', file.from)
     if ( file.additions != 1 ) {
-	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
     }
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"))
 
     let changes_index = 0
     while ( file.chunks[0].changes[changes_index].type != 'add' ) {
-	changes_index++
+        changes_index++
     }
     const line = file.chunks[0].changes[changes_index].content
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
     if (  ghRepoMatch == null ) {
-	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El cambio debe incluir el URL del pull request " ))
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El cambio debe incluir el URL de un pull request, este incluye " + line ))
     }
     const pull_URL =  ghRepoMatch[0]
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL ))
@@ -6258,9 +6258,16 @@ try {
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', user)
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', repo)
 
+    console.log( context.payload.pull_request)
+    console.log( context.payload.pull_request.user)
+
+    if ( context.payload.pull_request.user.login != user ) {
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
+    }
+
     const pull_branch = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_branch */ .Rb)( octokit, user, repo, ghRepoMatch[3] )
     if ( pull_branch == 'main' ) {
-	core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama" ))
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main" ))
     }
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
