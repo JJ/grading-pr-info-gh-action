@@ -6178,7 +6178,7 @@ function wrappy (fn, cb) {
 "use strict";
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "xl": () => (/* binding */ get_diff),
-/* harmony export */   "Rb": () => (/* binding */ get_pull_branch),
+/* harmony export */   "AW": () => (/* binding */ get_pull_info),
 /* harmony export */   "lx": () => (/* binding */ set_vars),
 /* harmony export */   "GF": () => (/* binding */ all_good),
 /* harmony export */   "bb": () => (/* binding */ sorry)
@@ -6191,10 +6191,10 @@ async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
-async function get_pull_branch( octokit, user, repo, pull_number ) {
+async function get_pull_info( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
-    return result.data.head.ref
+    return [result.data.head.ref, result.data.merged]
 }
 
 function set_vars( core, var_name, value ) {
@@ -6258,19 +6258,21 @@ try {
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'user', user)
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, 'repo', repo)
 
-    console.log( context.payload.pull_request)
-    console.log( context.payload.pull_request.user)
-
     if ( context.payload.pull_request.user.login != user ) {
         core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
     }
 
-    const pull_branch = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_branch */ .Rb)( octokit, user, repo, ghRepoMatch[3] )
+    const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)( octokit, user, repo, ghRepoMatch[3] )
+    const pull_branch = pull_info[0]
     if ( pull_branch == 'main' ) {
         core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main" ))
     }
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
+
+    if ( pull_info[0] != 'false') {
+        core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto" ))
+    }
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }

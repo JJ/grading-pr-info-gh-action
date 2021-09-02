@@ -6,10 +6,10 @@ export async function get_diff( context, octokit ) {
     return parse( result.data )
 }
 
-export async function get_pull_branch( octokit, user, repo, pull_number ) {
+export async function get_pull_info( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
-    return result.data.head.ref
+    return [result.data.head.ref, result.data.merged]
 }
 
 export  function set_vars( core, var_name, value ) {

@@ -1,6 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-import {get_diff, get_pull_branch, set_vars, all_good, sorry} from "./grading.js"
+import {get_diff, get_pull_info, set_vars, all_good, sorry} from "./grading.js"
 
 try {
     const context = github.context
@@ -36,19 +36,21 @@ try {
     set_vars(core, 'user', user)
     set_vars(core, 'repo', repo)
 
-    console.log( context.payload.pull_request)
-    console.log( context.payload.pull_request.user)
-
     if ( context.payload.pull_request.user.login != user ) {
         core.setFailed( sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
     }
 
-    const pull_branch = await get_pull_branch( octokit, user, repo, ghRepoMatch[3] )
+    const pull_info = await get_pull_info( octokit, user, repo, ghRepoMatch[3] )
+    const pull_branch = pull_info[0]
     if ( pull_branch == 'main' ) {
         core.setFailed( sorry("El PR debe ser desde una rama, no desde main" ))
     }
     core.info( all_good("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     set_vars( core, 'rama', pull_branch )
+
+    if ( pull_info[0] != 'false') {
+        core.setFailed( sorry("El PR de tu repositorio tiene que estar abierto" ))
+    }
 } catch (error) {
     core.setFailed("❌ Algo indeterminado ha fallado ❌. Mira el mensaje: " + error.message);
 }
