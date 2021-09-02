@@ -14,19 +14,19 @@ try {
     core.info( all_good("Hay solo un fichero 📁" + file.from + "📁 en el pull request"))
     set_vars(core,'file', file.from)
     if ( file.additions != 1 ) {
-	core.setFailed( sorry("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
+        core.setFailed( sorry("Debes cambiar exactamente 1 línea en el fichero, hay ❌" + file.additions + "❌ cambiadas en el pull request" ))
     }
     core.info( all_good("Hay solo una línea cambiada en el pull request"))
 
     let changes_index = 0
     while ( file.chunks[0].changes[changes_index].type != 'add' ) {
-	changes_index++
+        changes_index++
     }
     const line = file.chunks[0].changes[changes_index].content
     const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(line)
 
     if (  ghRepoMatch == null ) {
-	core.setFailed( sorry("El cambio debe incluir el URL del pull request " ))
+        core.setFailed( sorry("El cambio debe incluir el URL de un pull request, este incluye " + line ))
     }
     const pull_URL =  ghRepoMatch[0]
     core.info( all_good("Encontrado URL de un pull request 🔗" + pull_URL ))
@@ -36,9 +36,13 @@ try {
     set_vars(core, 'user', user)
     set_vars(core, 'repo', repo)
 
+    if ( context.payload.pull_request.user.login != user ) {
+        core.setFailed( sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
+    }
+
     const pull_branch = await get_pull_branch( octokit, user, repo, ghRepoMatch[3] )
     if ( pull_branch == 'main' ) {
-	core.setFailed( sorry("El PR debe ser desde una rama" ))
+        core.setFailed( sorry("El PR debe ser desde una rama, no desde main" ))
     }
     core.info( all_good("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     set_vars( core, 'rama', pull_branch )
