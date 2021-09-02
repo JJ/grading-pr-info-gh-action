@@ -36,6 +36,9 @@ try {
     set_vars(core, 'user', user)
     set_vars(core, 'repo', repo)
 
+    console.log( context.payload.pull_request)
+    console.log( context.payload.pull_request.user)
+
     if ( context.payload.pull_request.user.login != user ) {
         core.setFailed( sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user ))
     }
