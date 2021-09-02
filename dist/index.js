@@ -6270,7 +6270,7 @@ try {
     core.info( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)( core, 'rama', pull_branch )
 
-    if ( pull_info[0] != 'false') {
+    if ( pull_info[0] != 'open') {
         core.setFailed( (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto" ))
     }
 } catch (error) {

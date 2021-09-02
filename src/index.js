@@ -48,7 +48,7 @@ try {
     core.info( all_good("Encontrado pull request desde la rama 🌿 " + pull_branch ))
     set_vars( core, 'rama', pull_branch )
 
-    if ( pull_info[0] != 'false') {
+    if ( pull_info[0] != 'open') {
         core.setFailed( sorry("El PR de tu repositorio tiene que estar abierto" ))
     }
 } catch (error) {
