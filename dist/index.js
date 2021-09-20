@@ -6243,7 +6243,7 @@ try {
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
   );
   (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "file", file.from);
-  const fileMatch = /-(\d+)/.match(file.from);
+  const fileMatch = /-(\d+)/.exec(file.from);
   (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "objetivo", fileMatch[1]);
   if (file.additions != 1) {
     core.setFailed(
