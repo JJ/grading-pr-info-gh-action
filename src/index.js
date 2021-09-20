@@ -27,6 +27,8 @@ try {
     all_good("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
   );
   set_vars(core, "file", file.from);
+  const fileMatch = /-(\d+)/.match(file.from);
+  set_vars(core, "objetivo", fileMatch[1]);
   if (file.additions != 1) {
     core.setFailed(
       sorry(

@@ -1,16 +1,18 @@
-name: 'Extrae info de un pull request, IV/CC/ÁgilGRX'
-description: 'Mira un PR y extrae URL, usuario y nombre del repo, así como fichero modificado'
+name: "Extrae info de un pull request, IV/CC/ÁgilGRX"
+description: "Mira un PR y extrae URL, usuario y nombre del repo, así como fichero modificado"
 outputs:
   user: # The user who did the PR, which must be the repo owner
-    description: 'Usuario que creó el PR y del repo añadido'
+    description: "Usuario que creó el PR y del repo añadido"
   repo:
-    description: 'ID del repositorio que se ha añadido al PR'
+    description: "ID del repositorio que se ha añadido al PR"
   rama:
-    description: 'Rama del proyecto incluida en el PR'
+    description: "Rama del proyecto incluida en el PR"
   URL:
-    description: 'URL del repo a comprobar completo'
+    description: "URL del repo a comprobar completo"
   file:
-    description: 'Fichero modificado en el PR'
+    description: "Fichero modificado en el PR"
+  objetivo:
+    description: "Objetivo al que corresponde el PR"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
