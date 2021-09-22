@@ -32,7 +32,7 @@ set_vars(core, "objetivo", fileMatch[1]);
 if (file.additions != 1) {
   core.setFailed(
     sorry(
-      "Debes cambiar exactamente 1 línea en el fichero, hay ❌" +
+      "Debes cambiar exactamente una línea en el fichero, hay ❌" +
         file.additions +
         "❌ cambiadas en el pull request"
     )

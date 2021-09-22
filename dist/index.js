@@ -6248,7 +6248,7 @@ const fileMatch = /-(\d+)/.exec(file.from);
 if (file.additions != 1) {
   core.setFailed(
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
-      "Debes cambiar exactamente 1 línea en el fichero, hay ❌" +
+      "Debes cambiar exactamente una línea en el fichero, hay ❌" +
         file.additions +
         "❌ cambiadas en el pull request"
     )
