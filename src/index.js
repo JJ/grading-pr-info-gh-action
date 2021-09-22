@@ -16,7 +16,7 @@ const file = diff[0];
 if (diff.length != 1) {
   core.setFailed(
     sorry(
-      "Debes cambiar exactamente 1 fichero, hay ❌" +
+      "Debes cambiar exactamente un fichero, hay ❌" +
         diff.length +
         "❌ en el pull request"
     )

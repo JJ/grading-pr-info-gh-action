@@ -6232,7 +6232,7 @@ const file = diff[0];
 if (diff.length != 1) {
   core.setFailed(
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
-      "Debes cambiar exactamente 1 fichero, hay ❌" +
+      "Debes cambiar exactamente un fichero, hay ❌" +
         diff.length +
         "❌ en el pull request"
     )
