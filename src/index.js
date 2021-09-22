@@ -56,37 +56,44 @@ if (diff.length != 1) {
             line
         )
       );
-    }
-
-    const pull_URL = ghRepoMatch[0];
-    core.info(all_good("Encontrado URL de un pull request 🔗" + pull_URL));
-    set_vars(core, "URL", pull_URL);
-    const user = ghRepoMatch[1];
-    const repo = ghRepoMatch[2];
-    set_vars(core, "user", user);
-    set_vars(core, "repo", repo);
-
-    if (context.payload.pull_request.user.login != user) {
-      core.setFailed(
-        sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user)
-      );
-    }
-
-    const pull_info = await get_pull_info(octokit, user, repo, ghRepoMatch[3]);
-    const pull_branch = pull_info[0];
-    if (pull_branch == "main") {
-      core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
     } else {
-      core.info(
-        all_good("Encontrado pull request desde la rama 🌿 " + pull_branch)
-      );
-    }
-    set_vars(core, "rama", pull_branch);
+      const pull_URL = ghRepoMatch[0];
+      core.info(all_good("Encontrado URL de un pull request 🔗" + pull_URL));
+      set_vars(core, "URL", pull_URL);
+      const user = ghRepoMatch[1];
+      const repo = ghRepoMatch[2];
+      set_vars(core, "user", user);
+      set_vars(core, "repo", repo);
 
-    if (pull_info[1] != "open") {
-      core.setFailed(sorry("El PR de tu repositorio tiene que estar abierto"));
-    } else {
-      core.info(all_good("El PR está todavía abierto 🔓"));
+      if (context.payload.pull_request.user.login != user) {
+        core.setFailed(
+          sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user)
+        );
+      }
+
+      const pull_info = await get_pull_info(
+        octokit,
+        user,
+        repo,
+        ghRepoMatch[3]
+      );
+      const pull_branch = pull_info[0];
+      if (pull_branch == "main") {
+        core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
+      } else {
+        core.info(
+          all_good("Encontrado pull request desde la rama 🌿 " + pull_branch)
+        );
+      }
+      set_vars(core, "rama", pull_branch);
+
+      if (pull_info[1] != "open") {
+        core.setFailed(
+          sorry("El PR de tu repositorio tiene que estar abierto")
+        );
+      } else {
+        core.info(all_good("El PR está todavía abierto 🔓"));
+      }
     }
   }
 }
