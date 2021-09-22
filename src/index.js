@@ -22,6 +22,7 @@ try {
           "❌ en el pull request"
       )
     );
+    exit(core.ExitCode());
   } else {
     core.info(
       all_good("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
@@ -38,9 +39,10 @@ try {
           "❌ cambiadas en el pull request"
       )
     );
-  } else {
-    core.info(all_good("Hay solo una línea cambiada en el pull request"));
+    exit(core.ExitCode());
   }
+
+  core.info(all_good("Hay solo una línea cambiada en el pull request"));
 
   let changes_index = 0;
   while (file.chunks[0].changes[changes_index].type != "add") {
@@ -57,37 +59,39 @@ try {
         "El cambio debe incluir el URL de un pull request, este incluye " + line
       )
     );
+    exit(core.ExitCode());
+  }
+
+  const pull_URL = ghRepoMatch[0];
+  core.info(all_good("Encontrado URL de un pull request 🔗" + pull_URL));
+  set_vars(core, "URL", pull_URL);
+  const user = ghRepoMatch[1];
+  const repo = ghRepoMatch[2];
+  set_vars(core, "user", user);
+  set_vars(core, "repo", repo);
+
+  if (context.payload.pull_request.user.login != user) {
+    core.setFailed(
+      sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user)
+    );
+    exit(core.ExitCode());
+  }
+
+  const pull_info = await get_pull_info(octokit, user, repo, ghRepoMatch[3]);
+  const pull_branch = pull_info[0];
+  if (pull_branch == "main") {
+    core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
   } else {
-    const pull_URL = ghRepoMatch[0];
-    core.info(all_good("Encontrado URL de un pull request 🔗" + pull_URL));
-    set_vars(core, "URL", pull_URL);
-    const user = ghRepoMatch[1];
-    const repo = ghRepoMatch[2];
-    set_vars(core, "user", user);
-    set_vars(core, "repo", repo);
+    core.info(
+      all_good("Encontrado pull request desde la rama 🌿 " + pull_branch)
+    );
+  }
+  set_vars(core, "rama", pull_branch);
 
-    if (context.payload.pull_request.user.login != user) {
-      core.setFailed(
-        sorry("El PR debe ser de tu propio repositorio, no de 🧍" + user)
-      );
-    }
-
-    const pull_info = await get_pull_info(octokit, user, repo, ghRepoMatch[3]);
-    const pull_branch = pull_info[0];
-    if (pull_branch == "main") {
-      core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
-    } else {
-      core.info(
-        all_good("Encontrado pull request desde la rama 🌿 " + pull_branch)
-      );
-    }
-    set_vars(core, "rama", pull_branch);
-
-    if (pull_info[1] != "open") {
-      core.setFailed(sorry("El PR de tu repositorio tiene que estar abierto"));
-    } else {
-      core.info(all_good("El PR está todavía abierto 🔓"));
-    }
+  if (pull_info[1] != "open") {
+    core.setFailed(sorry("El PR de tu repositorio tiene que estar abierto"));
+  } else {
+    core.info(all_good("El PR está todavía abierto 🔓"));
   }
 } catch (error) {
   core.setFailed(

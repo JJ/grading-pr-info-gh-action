@@ -6238,6 +6238,7 @@ try {
           "❌ en el pull request"
       )
     );
+    exit(core.ExitCode());
   } else {
     core.info(
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
@@ -6254,9 +6255,10 @@ try {
           "❌ cambiadas en el pull request"
       )
     );
-  } else {
-    core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"));
+    exit(core.ExitCode());
   }
+
+  core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Hay solo una línea cambiada en el pull request"));
 
   let changes_index = 0;
   while (file.chunks[0].changes[changes_index].type != "add") {
@@ -6273,37 +6275,39 @@ try {
         "El cambio debe incluir el URL de un pull request, este incluye " + line
       )
     );
+    exit(core.ExitCode());
+  }
+
+  const pull_URL = ghRepoMatch[0];
+  core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL));
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "URL", pull_URL);
+  const user = ghRepoMatch[1];
+  const repo = ghRepoMatch[2];
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
+
+  if (context.payload.pull_request.user.login != user) {
+    core.setFailed(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user)
+    );
+    exit(core.ExitCode());
+  }
+
+  const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, ghRepoMatch[3]);
+  const pull_branch = pull_info[0];
+  if (pull_branch == "main") {
+    core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main"));
   } else {
-    const pull_URL = ghRepoMatch[0];
-    core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL));
-    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "URL", pull_URL);
-    const user = ghRepoMatch[1];
-    const repo = ghRepoMatch[2];
-    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
-    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
+    core.info(
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch)
+    );
+  }
+  (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "rama", pull_branch);
 
-    if (context.payload.pull_request.user.login != user) {
-      core.setFailed(
-        (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user)
-      );
-    }
-
-    const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, ghRepoMatch[3]);
-    const pull_branch = pull_info[0];
-    if (pull_branch == "main") {
-      core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main"));
-    } else {
-      core.info(
-        (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado pull request desde la rama 🌿 " + pull_branch)
-      );
-    }
-    (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "rama", pull_branch);
-
-    if (pull_info[1] != "open") {
-      core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto"));
-    } else {
-      core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("El PR está todavía abierto 🔓"));
-    }
+  if (pull_info[1] != "open") {
+    core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto"));
+  } else {
+    core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("El PR está todavía abierto 🔓"));
   }
 } catch (error) {
   core.setFailed(
