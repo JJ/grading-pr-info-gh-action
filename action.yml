@@ -1,7 +1,7 @@
 name: "Extrae info de un pull request, IV/CC/ÁgilGRX"
 description: "Mira un PR y extrae URL, usuario y nombre del repo, así como fichero modificado y objetivo"
 outputs:
-  user: # The user who did the PR, which must be the repo owner
+  user:
     description: "Usuario que creó el PR y del repo añadido"
   repo:
     description: "ID del repositorio que se ha añadido al PR"
