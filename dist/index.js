@@ -6281,12 +6281,6 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
 
-      if (context.payload.pull_request.user.login != user) {
-        core.setFailed(
-          (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser de tu propio repositorio, no de 🧍" + user)
-        );
-      }
-
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(
         octokit,
         user,
