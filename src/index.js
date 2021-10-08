@@ -60,7 +60,7 @@ if (diff.length != 1) {
       const pull_URL = ghRepoMatch[0];
       core.info(all_good("Encontrado URL de un pull request 🔗" + pull_URL));
       set_vars(core, "URL", pull_URL);
-      const user = ghRepoMatch[1];
+      let user = ghRepoMatch[1];
       const repo = ghRepoMatch[2];
       set_vars(core, "user", user);
       set_vars(core, "repo", repo);
@@ -71,7 +71,12 @@ if (diff.length != 1) {
         repo,
         ghRepoMatch[3]
       );
-      const pull_branch = pull_info[0];
+	let pull_branch = pull_info[0];
+	if ( pull_branch.match(/\w+:\w+/) ) {
+	    const user_branch = pull_branch.split(":");
+	    user = user_branch[0];
+	    pull_branch = user_branch[1];
+	}
       if (pull_branch == "main") {
         core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
       } else {
