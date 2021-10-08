@@ -6194,8 +6194,8 @@ async function get_diff( context, octokit ) {
 async function get_pull_info( octokit, user, repo, pull_number ) {
     const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
     const result = await octokit.request( pull_url )
-    console.log(result)
-    return [result.data.head.ref, result.data.state]
+    console.log(result.data)
+    return [result.data.head.label, result.data.state]
 }
 
 function set_vars( core, var_name, value ) {
