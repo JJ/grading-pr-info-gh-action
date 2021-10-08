@@ -6277,8 +6277,9 @@ if (diff.length != 1) {
       const pull_URL = ghRepoMatch[0];
       core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrado URL de un pull request 🔗" + pull_URL));
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "URL", pull_URL);
-      let user = ghRepoMatch[1];
+      const user = ghRepoMatch[1];
       const repo = ghRepoMatch[2];
+      let checkout_repo = `${user}/${repo}`;
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
 
@@ -6288,12 +6289,14 @@ if (diff.length != 1) {
         repo,
         ghRepoMatch[3]
       );
-	let pull_branch = pull_info[0];
-	if ( pull_branch.match(/\w+:\w+/) ) {
-	    const user_branch = pull_branch.split(":");
-	    user = user_branch[0];
-	    pull_branch = user_branch[1];
-	}
+	    let pull_branch = pull_info[0];
+	    if ( pull_branch.match(/:/) ) {
+        console.log("pull_branch", pull_branch )
+	      const user_branch = pull_branch.split(":");
+	      checkout_repo = `${user_branch[0]}/${repo}`;
+	      pull_branch = user_branch[1];
+      }
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "checkout_repo", checkout_repo);
       if (pull_branch == "main") {
         core.setFailed((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR debe ser desde una rama, no desde main"));
       } else {

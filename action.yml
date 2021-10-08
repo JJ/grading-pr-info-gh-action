@@ -13,6 +13,8 @@ outputs:
     description: "Fichero modificado en el PR"
   objetivo:
     description: "Objetivo al que corresponde el PR"
+  checkout_repo:
+    description: "Repo sobre el que se van a hacer los análisis"
 runs:
   using: "node12"
   main: "dist/index.js"
