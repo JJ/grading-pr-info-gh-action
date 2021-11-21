@@ -98,6 +98,9 @@ if (diff.length != 1) {
       }
 
       set_vars(core, "pr_milestone", pull_info[2]);
+      if (pull_info[2] != null) {
+        core.info(all_good(`El PR asignado al milestone 🚧 ${pull_info[2]}`));
+      }
     }
   }
 }
