@@ -15,6 +15,8 @@ outputs:
     description: "Objetivo al que corresponde el PR"
   checkout_repo:
     description: "Repo sobre el que se van a hacer los análisis"
+  pr_milestone:
+    description: "Milestone al que está asociado el PR"
 runs:
   using: "node12"
   main: "dist/index.js"

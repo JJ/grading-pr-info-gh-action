@@ -72,12 +72,12 @@ if (diff.length != 1) {
         repo,
         ghRepoMatch[3]
       );
-	    let pull_branch = pull_info[0];
-	    if ( pull_branch.match(/:/) ) {
-        console.log("pull_branch", pull_branch )
-	      const user_branch = pull_branch.split(":");
-	      checkout_repo = `${user_branch[0]}/${repo}`;
-	      pull_branch = user_branch[1];
+      let pull_branch = pull_info[0];
+      if (pull_branch.match(/:/)) {
+        console.log("pull_branch", pull_branch);
+        const user_branch = pull_branch.split(":");
+        checkout_repo = `${user_branch[0]}/${repo}`;
+        pull_branch = user_branch[1];
       }
       set_vars(core, "checkout_repo", checkout_repo);
       if (pull_branch == "main") {
@@ -96,6 +96,8 @@ if (diff.length != 1) {
       } else {
         core.info(all_good("El PR está todavía abierto 🔓"));
       }
+
+      set_vars(core, "pr_milestone", pull_info[2]);
     }
   }
 }

@@ -6183,32 +6183,32 @@ function wrappy (fn, cb) {
 /* harmony export */   "GF": () => (/* binding */ all_good),
 /* harmony export */   "bb": () => (/* binding */ sorry)
 /* harmony export */ });
-const parse = __nccwpck_require__(833)
+const parse = __nccwpck_require__(833);
 
-async function get_diff( context, octokit ) {
-    const diff_url = context.payload.pull_request.diff_url
-    const result = await octokit.request( diff_url )
-    return parse( result.data )
+async function get_diff(context, octokit) {
+  const diff_url = context.payload.pull_request.diff_url;
+  const result = await octokit.request(diff_url);
+  return parse(result.data);
 }
 
-async function get_pull_info( octokit, user, repo, pull_number ) {
-    const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`
-    const result = await octokit.request( pull_url )
-    console.log(result.data)
-    return [result.data.head.label, result.data.state]
+async function get_pull_info(octokit, user, repo, pull_number) {
+  const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`;
+  const result = await octokit.request(pull_url);
+  console.log(result.data);
+  return [result.data.head.label, result.data.state, result.data.milestone];
 }
 
-function set_vars( core, var_name, value ) {
-    core.setOutput(var_name, value)
-    core.exportVariable(var_name, value )
+function set_vars(core, var_name, value) {
+  core.setOutput(var_name, value);
+  core.exportVariable(var_name, value);
 }
 
-function all_good ( mensaje ) {
-    return "✅🍊️‍🔥 " + mensaje
+function all_good(mensaje) {
+  return "✅🍊️‍🔥 " + mensaje;
 }
 
-function sorry( mensaje ) {
-    return "🍋💥❌ " + mensaje
+function sorry(mensaje) {
+  return "🍋💥❌ " + mensaje;
 }
 
 
@@ -6289,12 +6289,12 @@ if (diff.length != 1) {
         repo,
         ghRepoMatch[3]
       );
-	    let pull_branch = pull_info[0];
-	    if ( pull_branch.match(/:/) ) {
-        console.log("pull_branch", pull_branch )
-	      const user_branch = pull_branch.split(":");
-	      checkout_repo = `${user_branch[0]}/${repo}`;
-	      pull_branch = user_branch[1];
+      let pull_branch = pull_info[0];
+      if (pull_branch.match(/:/)) {
+        console.log("pull_branch", pull_branch);
+        const user_branch = pull_branch.split(":");
+        checkout_repo = `${user_branch[0]}/${repo}`;
+        pull_branch = user_branch[1];
       }
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "checkout_repo", checkout_repo);
       if (pull_branch == "main") {
@@ -6313,6 +6313,8 @@ if (diff.length != 1) {
       } else {
         core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("El PR está todavía abierto 🔓"));
       }
+
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pr_milestone", pull_info[2]);
     }
   }
 }
