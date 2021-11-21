@@ -6201,6 +6201,7 @@ async function get_pull_info(octokit, user, repo, pull_number) {
   } else {
     milestone_number = "";
   }
+  console.log("Milestone number ", milestone_number);
   return [result.data.head.label, result.data.state, milestone_number];
 }
 
