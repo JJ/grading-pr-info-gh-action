@@ -62,15 +62,17 @@ if (diff.length != 1) {
       set_vars(core, "URL", pull_URL);
       const user = ghRepoMatch[1];
       const repo = ghRepoMatch[2];
+      const pull_number = ghRepoMatch[3];
       let checkout_repo = `${user}/${repo}`;
       set_vars(core, "user", user);
       set_vars(core, "repo", repo);
+      set_vars(core, "pull_number", pull_number);
 
       const pull_info = await get_pull_info(
         octokit,
         user,
         repo,
-        ghRepoMatch[3]
+        pull_number
       );
       let pull_branch = pull_info[0];
       if (pull_branch.match(/:/)) {
