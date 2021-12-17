@@ -68,15 +68,10 @@ if (diff.length != 1) {
       set_vars(core, "repo", repo);
       set_vars(core, "pull_number", pull_number);
 
-      const pull_info = await get_pull_info(
-        octokit,
-        user,
-        repo,
-        pull_number
-      );
+      const pull_info = await get_pull_info(octokit, user, repo, pull_number);
       let pull_branch = pull_info[0];
       if (pull_branch.match(/:/)) {
-        console.log("pull_branch", pull_branch);
+        console.log("pull_branch ", pull_branch);
         const user_branch = pull_branch.split(":");
         checkout_repo = `${user_branch[0]}/${repo}`;
         pull_branch = user_branch[1];

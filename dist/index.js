@@ -6201,7 +6201,6 @@ async function get_pull_info(octokit, user, repo, pull_number) {
   } else {
     milestone_number = "";
   }
-  console.log("Milestone number ", milestone_number);
   return [result.data.head.label, result.data.state, milestone_number];
 }
 
@@ -6286,19 +6285,16 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "URL", pull_URL);
       const user = ghRepoMatch[1];
       const repo = ghRepoMatch[2];
+      const pull_number = ghRepoMatch[3];
       let checkout_repo = `${user}/${repo}`;
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "user", user);
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "repo", repo);
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pull_number", pull_number);
 
-      const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(
-        octokit,
-        user,
-        repo,
-        ghRepoMatch[3]
-      );
+      const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
       let pull_branch = pull_info[0];
       if (pull_branch.match(/:/)) {
-        console.log("pull_branch", pull_branch);
+        console.log("pull_branch ", pull_branch);
         const user_branch = pull_branch.split(":");
         checkout_repo = `${user_branch[0]}/${repo}`;
         pull_branch = user_branch[1];
