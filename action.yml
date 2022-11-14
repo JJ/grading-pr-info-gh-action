@@ -20,5 +20,5 @@ outputs:
   pull_number:
     description: "Número del PR en el repo"
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
