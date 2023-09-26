@@ -10305,7 +10305,6 @@ async function get_diff(context, octokit) {
 async function get_pull_info(octokit, user, repo, pull_number) {
   const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`;
   const result = await octokit.request(pull_url);
-  console.log(result.data);
   let milestone_number;
   if (result.data.milestone !== null) {
     milestone_number = result.data.milestone.number;
@@ -10407,17 +10406,15 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pull_number", pull_number);
 
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
-      console.warn(pull_info);
       if (!pull_info.pr_title.startsWith(title_prefix)) {
         core.setFailed(
           (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
-            `El título del PR debe empezar con ${title_prefix}, este empieza con ${pull_info.pr_title}`
+            `El título del PR debe empezar con «${title_prefix}», este empieza con «${pull_info.pr_title}»`
           )
         );
       }
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
-        console.log("pull_branch ", pull_branch);
         const user_branch = pull_branch.split(":");
         checkout_repo = `${user_branch[0]}/${repo}`;
         pull_branch = user_branch[1];
