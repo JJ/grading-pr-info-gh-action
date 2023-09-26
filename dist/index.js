@@ -10309,13 +10309,12 @@ async function get_pull_info(octokit, user, repo, pull_number) {
   let milestone_number;
   if (result.data.milestone !== null) {
     milestone_number = result.data.milestone.number;
-  } else {
-    milestone_number = "";
   }
   return {
     label: result.data.head.label,
     state: result.data.state,
     milestone_number: milestone_number,
+    pr_title: result.data.title,
   };
 }
 
@@ -10351,6 +10350,7 @@ const token = process.env.GITHUB_TOKEN;
 const octokit = new github.getOctokit(token);
 const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)(context, octokit);
 const file = diff[0];
+const title_prefix = "[IV-";
 if (diff.length != 1) {
   core.setFailed(
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
@@ -10407,6 +10407,14 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pull_number", pull_number);
 
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
+
+      if (!pull_info.pr_title.starts_with(title_prefix)) {
+        core.setFailed(
+          (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
+            `El título del PR debe empezar con ${title_prefix}, este empieza con ${pull_info.pr_title}`
+          )
+        );
+      }
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         console.log("pull_branch ", pull_branch);

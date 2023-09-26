@@ -13,13 +13,12 @@ export async function get_pull_info(octokit, user, repo, pull_number) {
   let milestone_number;
   if (result.data.milestone !== null) {
     milestone_number = result.data.milestone.number;
-  } else {
-    milestone_number = "";
   }
   return {
     label: result.data.head.label,
     state: result.data.state,
     milestone_number: milestone_number,
+    pr_title: result.data.title,
   };
 }
 

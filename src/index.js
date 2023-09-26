@@ -13,6 +13,7 @@ const token = process.env.GITHUB_TOKEN;
 const octokit = new github.getOctokit(token);
 const diff = await get_diff(context, octokit);
 const file = diff[0];
+const title_prefix = "[IV-";
 if (diff.length != 1) {
   core.setFailed(
     sorry(
@@ -69,6 +70,14 @@ if (diff.length != 1) {
       set_vars(core, "pull_number", pull_number);
 
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
+
+      if (!pull_info.pr_title.starts_with(title_prefix)) {
+        core.setFailed(
+          sorry(
+            `El título del PR debe empezar con ${title_prefix}, este empieza con ${pull_info.pr_title}`
+          )
+        );
+      }
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         console.log("pull_branch ", pull_branch);
