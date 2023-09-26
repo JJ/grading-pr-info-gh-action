@@ -10433,8 +10433,10 @@ if (diff.length != 1) {
       }
 
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pr_milestone", pull_info[2]);
-      if (pull_info.milestone_number != null) {
-        core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)(`El PR asignado al milestone 🚧 ${pull_info[2]}`));
+      if (!typeof pull_info.milestone_number === undefined) {
+        core.info(
+          (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)(`El PR está asignado al milestone 🚧 ${pull_info[2]}`)
+        );
       }
     }
   }
