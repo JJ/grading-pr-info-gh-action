@@ -10407,7 +10407,7 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pull_number", pull_number);
 
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
-
+      console.warn(pull_info);
       if (!pull_info.pr_title.starts_with(title_prefix)) {
         core.setFailed(
           (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(

@@ -70,7 +70,7 @@ if (diff.length != 1) {
       set_vars(core, "pull_number", pull_number);
 
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
-
+      console.warn(pull_info);
       if (!pull_info.pr_title.starts_with(title_prefix)) {
         core.setFailed(
           sorry(
