@@ -10408,7 +10408,7 @@ if (diff.length != 1) {
 
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
       console.warn(pull_info);
-      if (!pull_info.pr_title.starts_with(title_prefix)) {
+      if (!pull_info.pr_title.startsWith(title_prefix)) {
         core.setFailed(
           (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
             `El título del PR debe empezar con ${title_prefix}, este empieza con ${pull_info.pr_title}`
