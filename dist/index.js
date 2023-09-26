@@ -10312,7 +10312,11 @@ async function get_pull_info(octokit, user, repo, pull_number) {
   } else {
     milestone_number = "";
   }
-  return [result.data.head.label, result.data.state, milestone_number];
+  return {
+    label: result.data.head.label,
+    state: result.data.state,
+    milestone_number: milestone_number,
+  };
 }
 
 function set_vars(core, var_name, value) {
@@ -10403,7 +10407,7 @@ if (diff.length != 1) {
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pull_number", pull_number);
 
       const pull_info = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_pull_info */ .AW)(octokit, user, repo, pull_number);
-      let pull_branch = pull_info[0];
+      let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         console.log("pull_branch ", pull_branch);
         const user_branch = pull_branch.split(":");
@@ -10420,7 +10424,7 @@ if (diff.length != 1) {
       }
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "rama", pull_branch);
 
-      if (pull_info[1] != "open") {
+      if (pull_info.state != "open") {
         core.setFailed(
           (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)("El PR de tu repositorio tiene que estar abierto")
         );
@@ -10429,7 +10433,7 @@ if (diff.length != 1) {
       }
 
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pr_milestone", pull_info[2]);
-      if (pull_info[2] != null) {
+      if (pull_info.milestone_number != null) {
         core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)(`El PR asignado al milestone 🚧 ${pull_info[2]}`));
       }
     }

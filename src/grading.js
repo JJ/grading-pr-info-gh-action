@@ -16,7 +16,11 @@ export async function get_pull_info(octokit, user, repo, pull_number) {
   } else {
     milestone_number = "";
   }
-  return [result.data.head.label, result.data.state, milestone_number];
+  return {
+    label: result.data.head.label,
+    state: result.data.state,
+    milestone_number: milestone_number,
+  };
 }
 
 export function set_vars(core, var_name, value) {

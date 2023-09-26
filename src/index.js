@@ -69,7 +69,7 @@ if (diff.length != 1) {
       set_vars(core, "pull_number", pull_number);
 
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
-      let pull_branch = pull_info[0];
+      let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         console.log("pull_branch ", pull_branch);
         const user_branch = pull_branch.split(":");
@@ -86,7 +86,7 @@ if (diff.length != 1) {
       }
       set_vars(core, "rama", pull_branch);
 
-      if (pull_info[1] != "open") {
+      if (pull_info.state != "open") {
         core.setFailed(
           sorry("El PR de tu repositorio tiene que estar abierto")
         );
@@ -95,7 +95,7 @@ if (diff.length != 1) {
       }
 
       set_vars(core, "pr_milestone", pull_info[2]);
-      if (pull_info[2] != null) {
+      if (pull_info.milestone_number != null) {
         core.info(all_good(`El PR asignado al milestone 🚧 ${pull_info[2]}`));
       }
     }
