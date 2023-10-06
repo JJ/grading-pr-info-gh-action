@@ -102,7 +102,6 @@ if (diff.length != 1) {
       }
 
       set_vars(core, "pr_milestone", pull_info.milestone_number);
-      console.log(pull_info.milestone_number);
       if (typeof pull_info.milestone_number === "number") {
         core.info(
           all_good(
