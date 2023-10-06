@@ -101,7 +101,7 @@ if (diff.length != 1) {
         core.info(all_good("El PR está todavía abierto 🔓"));
       }
 
-      set_vars(core, "pr_milestone", pull_info[2]);
+      set_vars(core, "pr_milestone", pull_info.milestone_number);
       if (!typeof pull_info.milestone_number === undefined) {
         core.info(
           all_good(`El PR está asignado al milestone 🚧 ${pull_info[2]}`)
