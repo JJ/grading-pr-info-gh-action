@@ -10438,7 +10438,6 @@ if (diff.length != 1) {
       }
 
       (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "pr_milestone", pull_info.milestone_number);
-      console.log(pull_info.milestone_number);
       if (typeof pull_info.milestone_number === "number") {
         core.info(
           (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)(
