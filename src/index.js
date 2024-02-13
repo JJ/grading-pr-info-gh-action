@@ -53,7 +53,7 @@ if (diff.length != 1) {
     if (ghRepoMatch == null) {
       core.setFailed(
         sorry(
-          "El cambio debe incluir el URL de un pull request, este incluye " +
+          "El cambio debe incluir el URL de un pull request en una línea de una tabla, este incluye " +
             line
         )
       );

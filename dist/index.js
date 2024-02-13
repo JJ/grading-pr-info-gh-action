@@ -10389,7 +10389,7 @@ if (diff.length != 1) {
     if (ghRepoMatch == null) {
       core.setFailed(
         (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
-          "El cambio debe incluir el URL de un pull request, este incluye " +
+          "El cambio debe incluir el URL de un pull request en una línea de una tabla, este incluye " +
             line
         )
       );
