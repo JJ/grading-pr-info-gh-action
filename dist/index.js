@@ -10349,7 +10349,7 @@ const token = process.env.GITHUB_TOKEN;
 const octokit = new github.getOctokit(token);
 const diff = await (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .get_diff */ .xl)(context, octokit);
 const file = diff[0];
-const title_prefix = "[IV-";
+const title_prefix = core.getInput("prefijo");
 if (diff.length != 1) {
   core.setFailed(
     (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
