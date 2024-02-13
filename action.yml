@@ -1,5 +1,9 @@
 name: "Extrae info de un pull request, IV/CC/ÁgilGRX"
 description: "Mira un PR y extrae URL, usuario y nombre del repo, así como fichero modificado y objetivo"
+inputs:
+  prefijo:
+    description: 'Prefijo que debe incluir el título del proyecto'
+    default: '[IV-'
 outputs:
   user:
     description: "Usuario que creó el PR y del repo añadido"
