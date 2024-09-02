@@ -111,8 +111,18 @@ if (diff.length != 1) {
       }
 
       const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
-      console.log(vMatch)
-      set_vars(core, "version", vMatch[0]);
+      if (vMatch == null) {
+        core.setFailed(
+          sorry(
+            "El cambio debe incluir la versión del proyecto en una línea de una tabla en el formato «vx.y.z», este incluye " +
+              line
+          )
+        );
+      } else {
+        core.info(all_good("Encontrada versión del proyecto 📦" + vMatch[0]));
+        set_vars(core, "version", vMatch[0]);
+      }
+
     }
   }
 }

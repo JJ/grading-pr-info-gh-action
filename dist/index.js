@@ -29374,8 +29374,18 @@ if (diff.length != 1) {
       }
 
       const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
-      console.log(vMatch)
-      ;(0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "version", vMatch[0]);
+      if (vMatch == null) {
+        core.setFailed(
+          (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .sorry */ .bb)(
+            "El cambio debe incluir la versión del proyecto en una línea de una tabla en el formato «vx.y.z», este incluye " +
+              line
+          )
+        );
+      } else {
+        core.info((0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .all_good */ .GF)("Encontrada versión del proyecto 📦" + vMatch[0]));
+        (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "version", vMatch[0]);
+      }
+
     }
   }
 }
