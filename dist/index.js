@@ -29372,6 +29372,9 @@ if (diff.length != 1) {
           )
         );
       }
+
+      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
+      (0,_grading_js__WEBPACK_IMPORTED_MODULE_0__/* .set_vars */ .lx)(core, "version", vMatch[1]);
     }
   }
 }

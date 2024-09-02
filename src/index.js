@@ -109,6 +109,9 @@ if (diff.length != 1) {
           )
         );
       }
+
+      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
+      set_vars(core, "version", vMatch[1]);
     }
   }
 }
