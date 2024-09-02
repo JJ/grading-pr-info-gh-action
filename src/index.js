@@ -112,7 +112,7 @@ if (diff.length != 1) {
 
       const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
       console.log(vMatch)
-      set_vars(core, "version", vMatch[1]);
+      set_vars(core, "version", vMatch[0]);
     }
   }
 }
