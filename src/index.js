@@ -73,7 +73,7 @@ if (diff.length != 1) {
       if (!pull_info.pr_title.startsWith(title_prefix)) {
         core.setFailed(
           sorry(
-            `El título del PR debe empezar con «${title_prefix}», este dice «${pull_info.pr_title}»`
+            `El título del PR en tu repositorio debe empezar con «${title_prefix}», este dice «${pull_info.pr_title}»`
           )
         );
       }
