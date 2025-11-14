@@ -8,7 +8,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - name: Checkout repo
         uses: actions/checkout@v5
       - name: Comprueba y analiza
