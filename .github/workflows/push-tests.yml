@@ -1,6 +1,5 @@
 name: "Para hacer tests en el repo"
-on:
-  pull_request
+on: [pull_request, push]
 
 jobs:
   auto-test:
@@ -12,8 +11,7 @@ jobs:
           node-version: 24
       - name: Checkout repo
         uses: actions/checkout@v7
-      - name: Comprueba y analiza
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          node dist/index.mjs
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
