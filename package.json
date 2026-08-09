@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "build": "ncc build src/index.js -o dist/"
+    "build": "esbuild src/index.js --bundle --platform=node --format=esm --outfile=dist/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -30,8 +30,8 @@
   "devDependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.0.0",
-    "@vercel/ncc": "^0.38.1",
     "chalk": "^5.3.0",
+    "esbuild": "^0.28.2",
     "parse-diff": "^0.11.1"
   }
 }

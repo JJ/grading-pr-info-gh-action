@@ -1,4 +1,4 @@
-const parse = require("parse-diff");
+import parse from "parse-diff";
 
 export async function get_diff(context, octokit) {
   const diff_url = context.payload.pull_request.diff_url;

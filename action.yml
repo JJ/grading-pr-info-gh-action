@@ -27,4 +27,4 @@ outputs:
     description: "Versión del repo en el PR"
 runs:
   using: "node20"
-  main: "dist/index.js"
+  main: "dist/index.mjs"
