@@ -5,7 +5,9 @@
   ],
   "packageRules": [
     {
-      "managers": ["npm"],
+      "matchManagers": [
+        "npm"
+      ],
       "enabled": false
     }
   ]
