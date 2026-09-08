@@ -26331,16 +26331,22 @@ var octokit = new getOctokit(token);
 var diff = await get_diff(context3, octokit);
 var file = diff[0];
 var title_prefix = getInput("prefijo");
+summary.addHeading("Resumen: probando el PR");
+var tableData = [
+  [{ data: "Prueba", header: true }, { data: "Resultado", header: true }]
+];
 if (diff.length != 1) {
   setFailed(
     sorry(
       "Debes cambiar exactamente un fichero, hay \u274C" + diff.length + "\u274C en el pull request"
     )
   );
+  tableData.push([{ data: "Un solo fichero en el PR" }, { data: "\u274C" }]);
 } else {
   info(
     all_good("Hay solo un fichero \u{1F4C1}" + file.from + "\u{1F4C1} en el pull request")
   );
+  tableData.push([{ data: "Un solo fichero en el PR" }, { data: "\u2705" }]);
   set_vars(core_exports, "file", file.from);
   const fileMatch = /-(\d+)/.exec(file.from);
   set_vars(core_exports, "objetivo", fileMatch[1]);
@@ -26350,8 +26356,16 @@ if (diff.length != 1) {
         "Debes cambiar exactamente una l\xEDnea en el fichero, hay \u274C" + file.additions + "\u274C cambiadas en el pull request"
       )
     );
+    tableData.push([
+      { data: "Una sola l\xEDnea cambiada en el fichero" },
+      { data: "\u274C" }
+    ]);
   } else {
     info(all_good("Hay solo una l\xEDnea cambiada en el pull request"));
+    tableData.push([
+      { data: "Una sola l\xEDnea cambiada en el fichero" },
+      { data: "\u2705" }
+    ]);
     let changes_index = 0;
     while (file.chunks[0].changes[changes_index].type != "add") {
       changes_index++;
@@ -26366,9 +26380,17 @@ if (diff.length != 1) {
           "El cambio debe incluir el URL de un pull request en una l\xEDnea de una tabla, este incluye " + line
         )
       );
+      tableData.push([
+        { data: "URL de un pull request en el cambio" },
+        { data: "\u274C" }
+      ]);
     } else {
       const pull_URL = ghRepoMatch[0];
       info(all_good("Encontrado URL de un pull request \u{1F517}" + pull_URL));
+      tableData.push([
+        { data: "URL de un pull request en el cambio" },
+        { data: "\u2705" }
+      ]);
       set_vars(core_exports, "URL", pull_URL);
       const user = ghRepoMatch[1];
       const repo = ghRepoMatch[2];
@@ -26384,6 +26406,15 @@ if (diff.length != 1) {
             `El t\xEDtulo del PR en tu repositorio debe empezar con \xAB${title_prefix}\xBB, este dice \xAB${pull_info.pr_title}\xBB`
           )
         );
+        tableData.push([
+          { data: `El t\xEDtulo del PR empieza con \xAB${title_prefix}\xBB` },
+          { data: "\u274C" }
+        ]);
+      } else {
+        tableData.push([
+          { data: `El t\xEDtulo del PR empieza con \xAB${title_prefix}\xBB` },
+          { data: "\u2705" }
+        ]);
       }
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
@@ -26394,18 +26425,28 @@ if (diff.length != 1) {
       set_vars(core_exports, "checkout_repo", checkout_repo);
       if (pull_branch == "main") {
         setFailed(sorry("El PR debe ser desde una rama, no desde main"));
+        tableData.push([
+          { data: "El PR es desde una rama, no desde main" },
+          { data: "\u274C" }
+        ]);
       } else {
         info(
           all_good("Encontrado pull request desde la rama \u{1F33F} " + pull_branch)
         );
+        tableData.push([
+          { data: "El PR es desde una rama, no desde main" },
+          { data: "\u2705" }
+        ]);
       }
       set_vars(core_exports, "rama", pull_branch);
       if (pull_info.state != "open") {
         setFailed(
           sorry("El PR de tu repositorio tiene que estar abierto")
         );
+        tableData.push([{ data: "El PR est\xE1 abierto" }, { data: "\u274C" }]);
       } else {
         info(all_good("El PR est\xE1 todav\xEDa abierto \u{1F513}"));
+        tableData.push([{ data: "El PR est\xE1 abierto" }, { data: "\u2705" }]);
       }
       set_vars(core_exports, "pr_milestone", pull_info.milestone_number);
       if (typeof pull_info.milestone_number === "number") {
@@ -26414,6 +26455,10 @@ if (diff.length != 1) {
             `El PR est\xE1 asignado al milestone \u{1F6A7} ${pull_info.milestone_number}`
           )
         );
+        tableData.push([
+          { data: "El PR est\xE1 asignado a un milestone" },
+          { data: "\u2705" }
+        ]);
       }
       const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
       if (vMatch == null) {
@@ -26422,13 +26467,22 @@ if (diff.length != 1) {
             "El cambio debe incluir la versi\xF3n del proyecto en una l\xEDnea de una tabla en el formato \xABvx.y.z\xBB, este incluye " + line
           )
         );
+        tableData.push([
+          { data: "Versi\xF3n del proyecto en formato \xABvx.y.z\xBB" },
+          { data: "\u274C" }
+        ]);
       } else {
         info(all_good("Encontrada versi\xF3n del proyecto \u{1F4E6}" + vMatch[0]));
         set_vars(core_exports, "version", vMatch[0]);
+        tableData.push([
+          { data: "Versi\xF3n del proyecto en formato \xABvx.y.z\xBB" },
+          { data: "\u2705" }
+        ]);
       }
     }
   }
 }
+await summary.addTable(tableData).write();
 /*! Bundled license information:
 
 undici/lib/web/fetch/body.js:
