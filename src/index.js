@@ -100,9 +100,6 @@ if (diff.length != 1) {
 
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
 
-      // FIXME: tras un `core.setFailed` la ejecución continúa (no hay return); las
-      // comprobaciones siguientes se anidan en `else`, pero la del título no, así que
-      // se sigue procesando la rama aunque el título sea incorrecto.
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         const user_branch = pull_branch.split(":");

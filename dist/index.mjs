@@ -26341,7 +26341,7 @@ if (diff.length != 1) {
       "Debes cambiar exactamente un fichero, hay \u274C" + diff.length + "\u274C en el pull request"
     )
   );
-  tableData.push([{ data: "Un solo fichero en el PR" }, { data: "\u274C" }]);
+  tableData.push([{ data: "<s>Un solo fichero en el PR</s>" }, { data: "\u274C" }]);
 } else {
   info(
     all_good("Hay solo un fichero \u{1F4C1}" + file.from + "\u{1F4C1} en el pull request")
@@ -26357,7 +26357,7 @@ if (diff.length != 1) {
       )
     );
     tableData.push([
-      { data: "Una sola l\xEDnea cambiada en el fichero" },
+      { data: "<s>Una sola l\xEDnea cambiada en el fichero</s>" },
       { data: "\u274C" }
     ]);
   } else {
@@ -26381,7 +26381,7 @@ if (diff.length != 1) {
         )
       );
       tableData.push([
-        { data: "URL de un pull request en el cambio" },
+        { data: "<s>URL de un pull request en el cambio</s>" },
         { data: "\u274C" }
       ]);
     } else {
@@ -26400,22 +26400,6 @@ if (diff.length != 1) {
       set_vars(core_exports, "repo", repo);
       set_vars(core_exports, "pull_number", pull_number);
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
-      if (!pull_info.pr_title.startsWith(title_prefix)) {
-        setFailed(
-          sorry(
-            `El t\xEDtulo del PR en tu repositorio debe empezar con \xAB${title_prefix}\xBB, este dice \xAB${pull_info.pr_title}\xBB`
-          )
-        );
-        tableData.push([
-          { data: `El t\xEDtulo del PR empieza con \xAB${title_prefix}\xBB` },
-          { data: "\u274C" }
-        ]);
-      } else {
-        tableData.push([
-          { data: `El t\xEDtulo del PR empieza con \xAB${title_prefix}\xBB` },
-          { data: "\u2705" }
-        ]);
-      }
       let pull_branch = pull_info.label;
       if (pull_branch.match(/:/)) {
         const user_branch = pull_branch.split(":");
@@ -26426,7 +26410,7 @@ if (diff.length != 1) {
       if (pull_branch == "main") {
         setFailed(sorry("El PR debe ser desde una rama, no desde main"));
         tableData.push([
-          { data: "El PR es desde una rama, no desde main" },
+          { data: "<s>El PR es desde una rama, no desde main</s>" },
           { data: "\u274C" }
         ]);
       } else {
@@ -26443,7 +26427,7 @@ if (diff.length != 1) {
         setFailed(
           sorry("El PR de tu repositorio tiene que estar abierto")
         );
-        tableData.push([{ data: "El PR est\xE1 abierto" }, { data: "\u274C" }]);
+        tableData.push([{ data: "<s>El PR est\xE1 abierto</s>" }, { data: "\u274C" }]);
       } else {
         info(all_good("El PR est\xE1 todav\xEDa abierto \u{1F513}"));
         tableData.push([{ data: "El PR est\xE1 abierto" }, { data: "\u2705" }]);
@@ -26468,7 +26452,7 @@ if (diff.length != 1) {
           )
         );
         tableData.push([
-          { data: "Versi\xF3n del proyecto en formato \xABvx.y.z\xBB" },
+          { data: "<s>Versi\xF3n del proyecto en formato \xABvx.y.z\xBB</s>" },
           { data: "\u274C" }
         ]);
       } else {
