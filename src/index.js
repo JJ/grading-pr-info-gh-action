@@ -28,7 +28,7 @@ if (diff.length != 1) {
         "❌ en el pull request"
     )
   );
-  tableData.push([{ data: "Un solo fichero en el PR" }, { data: "❌" }]);
+  tableData.push([{ data: "<s>Un solo fichero en el PR</s>" }, { data: "❌" }]);
 } else {
   core.info(
     all_good("Hay solo un fichero 📁" + file.from + "📁 en el pull request")
@@ -50,7 +50,7 @@ if (diff.length != 1) {
       )
     );
     tableData.push([
-      { data: "Una sola línea cambiada en el fichero" },
+      { data: "<s>Una sola línea cambiada en el fichero</s>" },
       { data: "❌" },
     ]);
   } else {
@@ -79,7 +79,7 @@ if (diff.length != 1) {
         )
       );
       tableData.push([
-        { data: "URL de un pull request en el cambio" },
+        { data: "<s>URL de un pull request en el cambio</s>" },
         { data: "❌" },
       ]);
     } else {
@@ -106,7 +106,7 @@ if (diff.length != 1) {
           )
         );
         tableData.push([
-          { data: `El título del PR empieza con «${title_prefix}»` },
+          { data: `<s>El título del PR empieza con «${title_prefix}»</s>` },
           { data: "❌" },
         ]);
       } else {
@@ -128,7 +128,7 @@ if (diff.length != 1) {
       if (pull_branch == "main") {
         core.setFailed(sorry("El PR debe ser desde una rama, no desde main"));
         tableData.push([
-          { data: "El PR es desde una rama, no desde main" },
+          { data: "<s>El PR es desde una rama, no desde main</s>" },
           { data: "❌" },
         ]);
       } else {
@@ -146,7 +146,7 @@ if (diff.length != 1) {
         core.setFailed(
           sorry("El PR de tu repositorio tiene que estar abierto")
         );
-        tableData.push([{ data: "El PR está abierto" }, { data: "❌" }]);
+        tableData.push([{ data: "<s>El PR está abierto</s>" }, { data: "❌" }]);
       } else {
         core.info(all_good("El PR está todavía abierto 🔓"));
         tableData.push([{ data: "El PR está abierto" }, { data: "✅" }]);
@@ -174,7 +174,7 @@ if (diff.length != 1) {
           )
         );
         tableData.push([
-          { data: "Versión del proyecto en formato «vx.y.z»" },
+          { data: "<s>Versión del proyecto en formato «vx.y.z»</s>" },
           { data: "❌" },
         ]);
       } else {
