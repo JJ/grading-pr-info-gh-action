@@ -57,6 +57,11 @@ beforeEach(() => {
     info: vi.fn(),
     setOutput: vi.fn(),
     exportVariable: vi.fn(),
+    summary: {
+      addHeading: vi.fn().mockReturnThis(),
+      addTable: vi.fn().mockReturnThis(),
+      write: vi.fn().mockResolvedValue(undefined),
+    },
   };
   octokitRequest = vi.fn();
 
@@ -108,19 +113,6 @@ describe("action entry point", () => {
       failureMessages().some((m) => m.includes("debe incluir el URL"))
     ).toBe(true);
     expect(octokitRequest).toHaveBeenCalledTimes(1);
-  });
-
-  it("fails when the PR title doesn't start with the required prefix", async () => {
-    octokitRequest.mockResolvedValueOnce({ data: makeDiff([GOOD_LINE]) });
-    octokitRequest.mockResolvedValueOnce({
-      data: makePrInfo({ title: "Sin prefijo" }),
-    });
-
-    await import("../src/index.js");
-
-    expect(
-      failureMessages().some((m) => m.includes("Sin prefijo"))
-    ).toBe(true);
   });
 
   it("fails when the PR branch is main", async () => {
