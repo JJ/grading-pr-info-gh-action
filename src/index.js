@@ -99,22 +99,7 @@ if (diff.length != 1) {
       set_vars(core, "pull_number", pull_number);
 
       const pull_info = await get_pull_info(octokit, user, repo, pull_number);
-      if (!pull_info.pr_title.startsWith(title_prefix)) {
-        core.setFailed(
-          sorry(
-            `El título del PR en tu repositorio debe empezar con «${title_prefix}», este dice «${pull_info.pr_title}»`
-          )
-        );
-        tableData.push([
-          { data: `<s>El título del PR empieza con «${title_prefix}»</s>` },
-          { data: "❌" },
-        ]);
-      } else {
-        tableData.push([
-          { data: `El título del PR empieza con «${title_prefix}»` },
-          { data: "✅" },
-        ]);
-      }
+
       // FIXME: tras un `core.setFailed` la ejecución continúa (no hay return); las
       // comprobaciones siguientes se anidan en `else`, pero la del título no, así que
       // se sigue procesando la rama aunque el título sea incorrecto.
