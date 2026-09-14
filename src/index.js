@@ -81,7 +81,7 @@ if (diff.length != 1) {
       changes_index++;
     }
     const line = file.chunks[0].changes[changes_index].content;
-    const ghRepoRegex = new RegExp( "github.com/(\S+)/(.+?)/pull/(\d+)(?=\s+|\\))" );
+    const ghRepoRegex = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/;
     console.log("line:", line);
     const ghRepoMatch = ghRepoRegex.exec( line );
     console.log("ghRepoMatch:", ghRepoMatch);
