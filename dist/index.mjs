@@ -26295,6 +26295,7 @@ function getOctokit(token2, options, ...additionalPlugins) {
 // src/grading.js
 var import_parse_diff = __toESM(require_parse_diff());
 var ghRepoRegex = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/;
+var versionRegex = /\bv(\d+\.\d+\.\d+)/;
 async function get_diff(context4, octokit2) {
   const diff_url = context4.payload.pull_request.diff_url;
   const result = await octokit2.request(diff_url);
@@ -26343,8 +26344,7 @@ var token = process.env.GITHUB_TOKEN;
 var octokit = new getOctokit(token);
 var diff = await get_diff(context3, octokit);
 var file = diff[0];
-var title_prefix = getInput("prefijo");
-summary.addHeading("Resumen: probando el PR");
+summary.addHeading("Resumen: testeando el PR");
 var tableData = [
   [{ data: "Prueba", header: true }, { data: "Resultado", header: true }]
 ];
@@ -26468,7 +26468,7 @@ if (diff.length != 1) {
           { data: "\u2705" }
         ]);
       }
-      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(added);
+      const vMatch = versionRegex.exec(added);
       if (vMatch == null) {
         setFailed(
           sorry(
@@ -26486,6 +26486,12 @@ if (diff.length != 1) {
           { data: "Versi\xF3n del proyecto en formato \xABvx.y.z\xBB" },
           { data: "\u2705" }
         ]);
+      }
+      const prevVersionMatch = versionRegex.exec(deleted);
+      if (prevVersionMatch == null) {
+        set_vars(core_exports, "prev_version", "v0.0.0");
+      } else {
+        set_vars(core_exports, "prev_version", prevVersionMatch[0]);
       }
     }
   }

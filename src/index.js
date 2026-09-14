@@ -180,7 +180,7 @@ if (diff.length != 1) {
 
       const prevVersionMatch = versionRegex.exec(deleted);
       if (prevVersionMatch == null) {
-        set_vars(core, "prev_version", "");
+        set_vars(core, "prev_version", "v0.0.0");
       } else {
         set_vars(core, "prev_version", prevVersionMatch[0]);
       }
