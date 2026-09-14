@@ -77,20 +77,15 @@ if (diff.length != 1) {
       { data: "✅" },
     ]);
 
-    let changes_index = 0;
-    while (file.chunks[0].changes[changes_index].type != "add") {
-      changes_index++;
-    }
-    const line = file.chunks[0].changes[changes_index].content;
-    console.log("line:", line);
-    const ghRepoMatch = ghRepoRegex.exec( line );
+    const {added, deleted } = get_diff_chunks_changes(file.chunks[0].changes);
+    const ghRepoMatch = ghRepoRegex.exec( added );
     console.log("ghRepoMatch:", ghRepoMatch);
 
     if (ghRepoMatch == null) {
       core.setFailed(
         sorry(
           "El cambio debe incluir el URL de un pull request en una línea de una tabla, este incluye " +
-            line
+            added
         )
       );
       tableData.push([
@@ -162,12 +157,12 @@ if (diff.length != 1) {
         ]);
       }
 
-      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
+      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(added);
       if (vMatch == null) {
         core.setFailed(
           sorry(
             "El cambio debe incluir la versión del proyecto en una línea de una tabla en el formato «vx.y.z», este incluye " +
-              line
+              added
           )
         );
         tableData.push([

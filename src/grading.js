@@ -13,9 +13,9 @@ export function get_diff_chunks_changes(diff_chunk_changes ) {
   let deleted = "";
   for (const change of diff_chunk_changes) {
     if (change.type == "add") {
-      added = change.content + "\n";
+      added = change.content;
     } else if (change.type == "del") {
-      deleted = change.content + "\n";
+      deleted = change.content ;
     }
   }
   return { added, deleted };

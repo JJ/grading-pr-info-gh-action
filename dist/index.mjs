@@ -26294,10 +26294,23 @@ function getOctokit(token2, options, ...additionalPlugins) {
 
 // src/grading.js
 var import_parse_diff = __toESM(require_parse_diff());
+var ghRepoRegex = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/;
 async function get_diff(context4, octokit2) {
   const diff_url = context4.payload.pull_request.diff_url;
   const result = await octokit2.request(diff_url);
   return (0, import_parse_diff.default)(result.data);
+}
+function get_diff_chunks_changes(diff_chunk_changes) {
+  let added = "";
+  let deleted = "";
+  for (const change of diff_chunk_changes) {
+    if (change.type == "add") {
+      added = change.content;
+    } else if (change.type == "del") {
+      deleted = change.content;
+    }
+  }
+  return { added, deleted };
 }
 async function get_pull_info(octokit2, user, repo, pull_number) {
   const pull_url = `https://api.github.com/repos/${user}/${repo}/pulls/${pull_number}`;
@@ -26382,18 +26395,13 @@ if (diff.length != 1) {
       { data: "Una sola l\xEDnea cambiada en el fichero" },
       { data: "\u2705" }
     ]);
-    let changes_index = 0;
-    while (file.chunks[0].changes[changes_index].type != "add") {
-      changes_index++;
-    }
-    const line = file.chunks[0].changes[changes_index].content;
-    const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(
-      line
-    );
+    const { added, deleted } = get_diff_chunks_changes(file.chunks[0].changes);
+    const ghRepoMatch = ghRepoRegex.exec(added);
+    console.log("ghRepoMatch:", ghRepoMatch);
     if (ghRepoMatch == null) {
       setFailed(
         sorry(
-          "El cambio debe incluir el URL de un pull request en una l\xEDnea de una tabla, este incluye " + line
+          "El cambio debe incluir el URL de un pull request en una l\xEDnea de una tabla, este incluye " + added
         )
       );
       tableData.push([
@@ -26460,11 +26468,11 @@ if (diff.length != 1) {
           { data: "\u2705" }
         ]);
       }
-      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(line);
+      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(added);
       if (vMatch == null) {
         setFailed(
           sorry(
-            "El cambio debe incluir la versi\xF3n del proyecto en una l\xEDnea de una tabla en el formato \xABvx.y.z\xBB, este incluye " + line
+            "El cambio debe incluir la versi\xF3n del proyecto en una l\xEDnea de una tabla en el formato \xABvx.y.z\xBB, este incluye " + added
           )
         );
         tableData.push([
