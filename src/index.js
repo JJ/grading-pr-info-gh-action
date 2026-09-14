@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import {
   get_diff,
+  get_diff_chunks_changes,
   get_pull_info,
   set_vars,
   all_good,
@@ -80,9 +81,8 @@ if (diff.length != 1) {
       changes_index++;
     }
     const line = file.chunks[0].changes[changes_index].content;
-    const ghRepoMatch = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/.exec(
-      line
-    );
+    const ghRepoRegex = RegExp.new( "github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))" );
+    const ghRepoMatch = ghRepoRegex.exec( line );
 
     if (ghRepoMatch == null) {
       core.setFailed(
