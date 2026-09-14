@@ -15,6 +15,17 @@ index e69de29..2b2f0a1 100644
 +| Alice | [PR#12](https://github.com/alice/myrepo/pull/12) | v1.2.3 |
 `;
 
+const ONE_FILE_ARROW_UP = `diff --git a/proyectos/objetivo-0.md b/proyectos/objetivo-0.md
+index cb74908..37e3a1d 100644
+--- a/proyectos/objetivo-0.md
++++ b/proyectos/objetivo-0.md
+@@ -8,4 +8,4 @@ iniciales.
+
+ | URL                                        | Versión | Alcanzado |
+ |--------------------------------------------|---------|-----------|
+-| https://github.com/JJ/dummy-IV/pull/11     | v0.0.3  ||
++| https://github.com/JJ/dummy-IV/pull/11     | v0.0.2  ||
+`;
 const TWO_FILE_DIFF = `diff --git a/a.md b/a.md
 index e69de29..2b2f0a1 100644
 --- a/a.md
@@ -37,10 +48,25 @@ describe("get_diff", () => {
     };
 
     const files = await get_diff(context, octokit);
-
+    console.log(files[0].chunks[0].changes);
     expect(octokit.request).toHaveBeenCalledWith("https://example.com/pr.diff");
     expect(files).toHaveLength(1);
     expect(files[0].from).toBe("actividades/actividad-3.md");
+    expect(files[0].additions).toBe(1);
+  });
+
+  it("fetches the PR diff URL and parses it into files", async () => {
+    const octokit = {
+      request: vi.fn().mockResolvedValue({ data: ONE_FILE_ARROW_UP }),
+    };
+    const context = {
+      payload: { pull_request: { diff_url: "https://example.com/pr.diff" } },
+    };
+
+    const files = await get_diff(context, octokit);
+    console.log(files[0].chunks[0].changes);
+    expect(files).toHaveLength(1);
+    expect(files[0].from).toBe("proyectos/objetivo-0.md");
     expect(files[0].additions).toBe(1);
   });
 
