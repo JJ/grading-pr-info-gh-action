@@ -75,8 +75,6 @@ if (diff.length != 1) {
       { data: "✅" },
     ]);
 
-    // FIXME: este bucle no comprueba los límites del array; si no hay ningún cambio
-    // de tipo "add" (o `file.chunks` está vacío) accede a `undefined.type` y lanza.
     let changes_index = 0;
     while (file.chunks[0].changes[changes_index].type != "add") {
       changes_index++;
