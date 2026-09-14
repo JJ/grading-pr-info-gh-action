@@ -208,8 +208,8 @@ index cb74908..37e3a1d 100644
 
  | URL                                        | Versión | Alcanzado |
  |--------------------------------------------|---------|-----------|
--| https://github.com/JJ/dummy-IV/pull/11     | v0.0.3  ||
-+| https://github.com/JJ/dummy-IV/pull/11     | v0.0.2  ||
+-| https://github.com/JJ/dummy-IV/pull/11     | v0.0.2  ||
++| https://github.com/JJ/dummy-IV/pull/11     | v0.0.3  ||
 `;
 
   it("sets prev_version when the deleted line has a version string", async () => {
@@ -217,6 +217,24 @@ index cb74908..37e3a1d 100644
     octokitRequest.mockResolvedValueOnce({ data: makePrInfo() });
 
     await import("../src/index.js");
+
+    const outputs = Object.fromEntries(
+      core.setOutput.mock.calls.map(([k, v]) => [k, v])
+    );
+    expect(outputs).toMatchObject({
+      file: "proyectos/objetivo-0.md",
+      objetivo: "0",
+      URL: "github.com/JJ/dummy-IV/pull/11",
+      user: "JJ",
+      repo: "dummy-IV",
+      pull_number: "11",
+      checkout_repo: "alice/dummy-IV",
+      rama: "practica-3",
+      pr_milestone: 5,
+      version: "v0.0.3",
+      prev_version: "v0.0.2",
+    });
+  });
 
   it("resolves checkout_repo from the PR label when it targets a fork", async () => {
     octokitRequest.mockResolvedValueOnce({ data: makeDiff([GOOD_LINE]) });
@@ -227,20 +245,9 @@ index cb74908..37e3a1d 100644
     await import("../src/index.js");
 
     const outputs = Object.fromEntries(
-      core.setOutput.mock.calls.map(([k, v]) => [k, v])
+        core.setOutput.mock.calls.map(([k, v]) => [k, v]),
     );
-    expect(outputs).toMatchObject({
-      file: FILE_NAME,
-      objetivo: "0",
-      URL: "github.com/JJ/dummy-IV/pull/11",
-      user: "JJ",
-      repo: "dummy-IV",
-      pull_number: "11",
-      checkout_repo: "JJ/dummy-IV",
-      rama: "practica-3",
-      pr_milestone: 5,
-      version: "v0.0.3",
-      prev_version: "v0.0.2",
-    });
+    expect(outputs.checkout_repo).toBe("bob/myrepo");
+    expect(outputs.rama).toBe("practica-3");
   });
 });
