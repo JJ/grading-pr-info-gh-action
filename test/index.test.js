@@ -195,7 +195,7 @@ describe("action entry point", () => {
       rama: "practica-3",
       pr_milestone: 5,
       version: "v1.2.3",
-      prev_version: "",
+      prev_version: "v0.0.0",
     });
     expect(core.exportVariable.mock.calls).toEqual(core.setOutput.mock.calls);
   });
