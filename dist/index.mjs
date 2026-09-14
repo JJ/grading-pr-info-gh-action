@@ -26397,7 +26397,6 @@ if (diff.length != 1) {
     ]);
     const { added, deleted } = get_diff_chunks_changes(file.chunks[0].changes);
     const ghRepoMatch = ghRepoRegex.exec(added);
-    console.log("ghRepoMatch:", ghRepoMatch);
     if (ghRepoMatch == null) {
       setFailed(
         sorry(
