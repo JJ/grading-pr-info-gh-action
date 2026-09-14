@@ -4,6 +4,7 @@ import {
   get_diff,
   get_diff_chunks_changes,
   get_pull_info,
+  ghRepoRegex,
   set_vars,
   all_good,
   sorry,
@@ -81,7 +82,6 @@ if (diff.length != 1) {
       changes_index++;
     }
     const line = file.chunks[0].changes[changes_index].content;
-    const ghRepoRegex = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/;
     console.log("line:", line);
     const ghRepoMatch = ghRepoRegex.exec( line );
     console.log("ghRepoMatch:", ghRepoMatch);
