@@ -3,6 +3,7 @@ import {
   get_diff,
   get_diff_chunks_changes,
   get_pull_info,
+  ghRepoRegex,
   set_vars,
   all_good,
   sorry,
@@ -51,8 +52,8 @@ describe("get_diff", () => {
     const files = await get_diff(context, octokit);
     console.log(files[0].chunks[0].changes);
     const changes = get_diff_chunks_changes(files[0].chunks[0].changes);
-    console.log("Added:", changes.added);
-    console.log("Deleted:", changes.deleted);
+    expect(ghRepoRegex.exec(changes.added)).toBeTruthy();
+    expect(ghRepoRegex.exec(changes.deleted)).toBeFalsy();
     expect(octokit.request).toHaveBeenCalledWith("https://example.com/pr.diff");
     expect(files).toHaveLength(1);
     expect(files[0].from).toBe("actividades/actividad-3.md");
@@ -72,6 +73,10 @@ describe("get_diff", () => {
     expect(files).toHaveLength(1);
     expect(files[0].from).toBe("proyectos/objetivo-0.md");
     expect(files[0].additions).toBe(1);
+
+    const changes = get_diff_chunks_changes(files[0].chunks[0].changes);
+    expect(ghRepoRegex.exec(changes.added)).toBeTruthy();
+    expect(ghRepoRegex.exec(changes.deleted)).toBeTruthy();
   });
 
   it("parses diffs touching multiple files", async () => {
