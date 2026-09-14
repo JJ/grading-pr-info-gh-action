@@ -3,12 +3,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const FILE_NAME = "actividades/actividad-3.md";
 const GOOD_LINE = "| Alice | [PR#12](https://github.com/alice/myrepo/pull/12) | v1.2.3 |";
 
-function makeDiff(lines) {
+function makeDiff(lines, fileName = FILE_NAME) {
   const body = lines.map((l) => `+${l}`).join("\n");
-  return `diff --git a/${FILE_NAME} b/${FILE_NAME}
+  return `diff --git a/${fileName} b/${fileName}
 index e69de29..2b2f0a1 100644
---- a/${FILE_NAME}
-+++ b/${FILE_NAME}
+--- a/${fileName}
++++ b/${fileName}
 @@ -0,0 +1,${lines.length} @@
 ${body}
 `;
@@ -113,6 +113,24 @@ describe("action entry point", () => {
       failureMessages().some((m) => m.includes("debe incluir el URL"))
     ).toBe(true);
     expect(octokitRequest).toHaveBeenCalledTimes(1);
+  });
+
+  it("fails clearly when the file name has no objetivo suffix", async () => {
+    octokitRequest.mockResolvedValueOnce({
+      data: makeDiff([GOOD_LINE], "actividades/actividad.md"),
+    });
+    octokitRequest.mockResolvedValueOnce({ data: makePrInfo() });
+
+    await expect(import("../src/index.js")).resolves.toBeDefined();
+
+    expect(
+      failureMessages().some((m) => m.includes("debe contener «-<dígitos>»"))
+    ).toBe(true);
+
+    const outputs = Object.fromEntries(
+      core.setOutput.mock.calls.map(([k, v]) => [k, v])
+    );
+    expect(outputs.objetivo).toBeUndefined();
   });
 
   it("fails when the PR branch is main", async () => {
