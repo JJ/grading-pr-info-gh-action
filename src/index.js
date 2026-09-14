@@ -182,6 +182,9 @@ if (diff.length != 1) {
         set_vars(core, "prev_version", "v0.0.0");
       } else {
         set_vars(core, "prev_version", prevVersionMatch[0]);
+        core.info(
+                  all_good("Encontrada versión anterior del proyecto 📦" + prevVersionMatch[0]),
+        );
       }
     }
   }

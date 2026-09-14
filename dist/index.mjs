@@ -26491,6 +26491,9 @@ if (diff.length != 1) {
         set_vars(core_exports, "prev_version", "v0.0.0");
       } else {
         set_vars(core_exports, "prev_version", prevVersionMatch[0]);
+        info(
+          all_good("Encontrada versi\xF3n anterior del proyecto \u{1F4E6}" + prevVersionMatch[0])
+        );
       }
     }
   }
