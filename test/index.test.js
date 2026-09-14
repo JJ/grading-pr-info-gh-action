@@ -52,7 +52,6 @@ beforeEach(() => {
   process.env.GITHUB_TOKEN = "fake-token";
 
   core = {
-    getInput: vi.fn(() => "[IV-"),
     setFailed: vi.fn(),
     info: vi.fn(),
     setOutput: vi.fn(),

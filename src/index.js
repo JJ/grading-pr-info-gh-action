@@ -177,6 +177,13 @@ if (diff.length != 1) {
           { data: "✅" },
         ]);
       }
+
+      const prevVersionMatch = versionRegex.exec(deleted);
+      if (prevVersionMatch == null) {
+        set_vars(core, "prev_version", "");
+      } else {
+        set_vars(core, "prev_version", prevVersionMatch[0]);
+      }
     }
   }
 }

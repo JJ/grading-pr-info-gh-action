@@ -21,6 +21,8 @@ outputs:
     description: "Número del PR en el repo"
   version:
     description: "Versión del repo en el PR"
+  prev_version:
+    description: "Versión del repo en el PR antes de los cambios"
 runs:
   using: "node24"
   main: "dist/index.mjs"

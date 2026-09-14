@@ -28,6 +28,7 @@ index cb74908..37e3a1d 100644
 -| https://github.com/JJ/dummy-IV/pull/11     | v0.0.3  ||
 +| https://github.com/JJ/dummy-IV/pull/11     | v0.0.2  ||
 `;
+
 const TWO_FILE_DIFF = `diff --git a/a.md b/a.md
 index e69de29..2b2f0a1 100644
 --- a/a.md
