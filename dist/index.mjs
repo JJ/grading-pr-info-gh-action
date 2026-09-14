@@ -26349,7 +26349,23 @@ if (diff.length != 1) {
   tableData.push([{ data: "Un solo fichero en el PR" }, { data: "\u2705" }]);
   set_vars(core_exports, "file", file.from);
   const fileMatch = /-(\d+)/.exec(file.from);
-  set_vars(core_exports, "objetivo", fileMatch[1]);
+  if (fileMatch == null) {
+    setFailed(
+      sorry(
+        "El nombre del fichero debe contener \xAB-<d\xEDgitos>\xBB para extraer el objetivo, este es " + file.from
+      )
+    );
+    tableData.push([
+      { data: "<s>Nombre de fichero con objetivo \xAB-<d\xEDgitos>\xBB</s>" },
+      { data: "\u274C" }
+    ]);
+  } else {
+    set_vars(core_exports, "objetivo", fileMatch[1]);
+    tableData.push([
+      { data: "Nombre de fichero con objetivo \xAB-<d\xEDgitos>\xBB" },
+      { data: "\u2705" }
+    ]);
+  }
   if (file.additions != 1) {
     setFailed(
       sorry(

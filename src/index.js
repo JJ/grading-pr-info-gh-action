@@ -36,10 +36,25 @@ if (diff.length != 1) {
   tableData.push([{ data: "Un solo fichero en el PR" }, { data: "✅" }]);
 
   set_vars(core, "file", file.from);
-  // FIXME: si `file.from` no contiene `-<dígitos>`, `fileMatch` es null y `fileMatch[1]`
-  // lanza una excepción no controlada en vez de un `core.setFailed` con mensaje claro.
   const fileMatch = /-(\d+)/.exec(file.from);
-  set_vars(core, "objetivo", fileMatch[1]);
+  if (fileMatch == null) {
+    core.setFailed(
+      sorry(
+        "El nombre del fichero debe contener «-<dígitos>» para extraer el objetivo, este es " +
+          file.from
+      )
+    );
+    tableData.push([
+      { data: "<s>Nombre de fichero con objetivo «-<dígitos>»</s>" },
+      { data: "❌" },
+    ]);
+  } else {
+    set_vars(core, "objetivo", fileMatch[1]);
+    tableData.push([
+      { data: "Nombre de fichero con objetivo «-<dígitos>»" },
+      { data: "✅" },
+    ]);
+  }
 
   if (file.additions != 1) {
     core.setFailed(
