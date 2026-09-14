@@ -8,6 +8,7 @@ import {
   set_vars,
   all_good,
   sorry,
+  versionRegex,
 } from "./grading.js";
 
 const context = github.context;
@@ -17,8 +18,7 @@ const diff = await get_diff(context, octokit);
 // FIXME: `file` se usa dentro del `else` (diff.length == 1), pero se asigna aquí
 // sin comprobar que `diff` no esté vacío. Mover la asignación dentro del `else`.
 const file = diff[0];
-const title_prefix = core.getInput("prefijo");
-core.summary.addHeading("Resumen: probando el PR");
+core.summary.addHeading("Resumen: testeando el PR");
 let tableData = [
   [{ data: "Prueba", header: true }, { data: "Resultado", header: true }],
 ];
@@ -157,7 +157,7 @@ if (diff.length != 1) {
         ]);
       }
 
-      const vMatch = /\bv(\d+\.\d+\.\d+)/.exec(added);
+      const vMatch = versionRegex.exec(added);
       if (vMatch == null) {
         core.setFailed(
           sorry(

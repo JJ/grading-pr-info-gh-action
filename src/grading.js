@@ -1,6 +1,7 @@
 import parse from "parse-diff";
 
 export const ghRepoRegex = /github.com\/(\S+)\/(.+?)\/pull\/(\d+)(?=\s+|\))/;
+export const versionRegex = /\bv(\d+\.\d+\.\d+)/;
 
 export async function get_diff(context, octokit) {
   const diff_url = context.payload.pull_request.diff_url;
